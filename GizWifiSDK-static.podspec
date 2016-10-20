@@ -3,7 +3,7 @@ Pod::Spec.new do |s|
   s.version      = "2.04.04"
   s.summary      = "GizWifiSDK static library for iOS"
   s.description  = "GizWifiSDK is a Wi-Fi hardware communication toolkit. Support architechures: armv7, arm64, x86_64, i386"
-  s.homepage     = "http://http://club.gizwits.com/"
+  s.homepage     = "http://dev.gizwits.com/"
   s.source       = { :git => "https://gitlab.gizwits.com/assistant_tools/GizWifiSDK-static.git", :tag => "#{s.version}" }
 
   s.ios.deployment_target = '6.0'
