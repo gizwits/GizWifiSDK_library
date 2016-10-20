@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "GizWifiSDK-static"
-  s.version      = "0.0.1"
+  s.version      = "2.04.04"
   s.summary      = "GizWifiSDK static library for iOS"
   s.description  = "GizWifiSDK is a Wi-Fi hardware communication toolkit. Support architechures: armv7, arm64, x86_64, i386"
   s.homepage     = "http://http://club.gizwits.com/"
@@ -10,9 +10,9 @@ Pod::Spec.new do |s|
   s.ios.source_files        = 'Headers/GizWifiSDK/*.h'
   s.ios.public_header_files = 'Headers/GizWifiSDK/*.h'
   s.ios.header_dir          = 'GizWifiSDK'
-  s.ios.preserve_paths      = 'Library/libGizWifiSDK.a', 'Library/libBLEasyConfig.a', 'Library/libcrypto.a', 'Library/libEasyLink.a', 'Library/libemTMF.a', 'Library/libEsptouch_v0.3.5.0.a', 'Library/libssl.a'
-  s.ios.vendored_libraries  = 'Library/libGizWifiSDK.a', 'Library/libBLEasyConfig.a', 'Library/libcrypto.a', 'Library/libEasyLink.a', 'Library/libemTMF.a', 'Library/libEsptouch_v0.3.5.0.a', 'Library/libssl.a'
+  s.ios.preserve_paths      = 'Library/libGizWifiSDK.a', 'Library/libBLEasyConfig.a', 'Library/libcrypto.a', 'Library/libEasyLink.a', 'Library/libemTMF.a', 'Library/libEsptouch_v0.3.5.1.a', 'Library/libssl.a'
+  s.ios.vendored_libraries  = 'Library/libGizWifiSDK.a', 'Library/libBLEasyConfig.a', 'Library/libcrypto.a', 'Library/libEasyLink.a', 'Library/libemTMF.a', 'Library/libEsptouch_v0.3.5.1.a', 'Library/libssl.a'
 
-  s.libraries = 'GizWifiSDK', 'BLEasyConfig', 'crypto', 'EasyLink', 'emTMF', 'Esptouch_v0.3.5.0', 'ssl'
+  s.libraries = 'GizWifiSDK', 'BLEasyConfig', 'crypto', 'EasyLink', 'emTMF', 'Esptouch_v0.3.5.1', 'ssl'
   s.requires_arc = true
 end
