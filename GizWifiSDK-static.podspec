@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '6.0'
   s.ios.source_files        = 'Headers/GizWifiSDK/*.h'
   s.ios.public_header_files = 'Headers/GizWifiSDK/*.h'
-  s.ios.header_dir          = 'Headers'
+  s.ios.header_dir          = 'GizWifiSDK'
   s.ios.preserve_paths      = 'Library/libGizWifiSDK.a', 'Library/libBLEasyConfig.a', 'Library/libcrypto.a', 'Library/libEasyLink.a', 'Library/libemTMF.a', 'Library/libEsptouch_v0.3.5.0.a', 'Library/libssl.a'
   s.ios.vendored_libraries  = 'Library/libGizWifiSDK.a', 'Library/libBLEasyConfig.a', 'Library/libcrypto.a', 'Library/libEasyLink.a', 'Library/libemTMF.a', 'Library/libEsptouch_v0.3.5.0.a', 'Library/libssl.a'
 
