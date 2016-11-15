@@ -15,6 +15,7 @@
 #import <GizWifiSDK/GizUserInfo.h>
 #import <GizWifiSDK/GizWifiBinary.h>
 #import <GizWifiSDK/GizSchedulerInfo.h>
+#import <GizWifiSDK/GizDeviceOTA.h>
 
 @class GizWifiSDK;
 
@@ -350,8 +351,28 @@
  */
 - (void)wifiSDK:(GizWifiSDK *)wifiSDK didGetSchedulerStatus:(NSError *)result sid:(NSString *)sid datetime:(NSString *)datetime status:(GizScheduleStatus)status statusDetail:(NSDictionary *)statusDetail;
 
+/*
+ 获取可以设置域名的设备列表的回调接口
+ @param wifiSDK 回调的 GizWifiSDK 单例
+ @param result 获取成功或失败。如果获取失败，其他参数为nil
+ @param devices 设备信息字典组成的数组。设备信息的字典格式如下：
+ {
+ “mac”: “xxx” // 设备mac地址
+ “productKey”: “xxx” // 设备的productKey
+ “domain”: “xxx” // 设备的域名信息
+ }
+ @note 该回调接口只返回设备的mac、productKey、domain这三个信息，不返回设备对象
+ @see 触发函数：[GizWifiSDK getDevicesToSetServerInfo]
+ */
 - (void)wifiSDK:(GizWifiSDK *)wifiSDK didGetDevicesToSetServerInfo:(NSError *)result devices:(NSArray *)devices;
 
+/*
+ 给模组设置域名的回调接口
+ @param wifiSDK 回调的 GizWifiSDK 单例
+ @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败
+ @param mac 设置域名的设备 mac
+ @see 触发函数：[GizWifiSDK setDeviceServerInfo:mac:]
+ */
 - (void)wifiSDK:(GizWifiSDK *)wifiSDK didSetDeviceServerInfo:(NSError *)result mac:(NSString *)mac;
 
 @end
@@ -379,9 +400,14 @@
  初始化 SDK。该接口执行后，其他接口功能才能正常执行。并且如果app设置了delegate，SDK可能会立即通过didDisconverd上报发现的设备。
  @param appID 在 site.gizwits.com 中，每个注册的设备在“产品信息”中，都能够查到对应的 appID。
  @param specialProductKeys 要过滤的设备productKey列表。该参数传null则返回所有设备。指定后，SDK将只返回过滤后的设备
- @param cloudServiceInfo 要切换的服务器域名信息。该参数传null表示使用默认的机智云生产环境。若需要指定其他环境，则按照以下字典{key:
- value}格式传值： { "openAPIInfo": "xxx", // String类型 "siteInfo":
- "xxx" // String类型 }
+ @param cloudServiceInfo 要切换的服务器域名信息。若该参数为nil，SDK将为App设置机智云全球部署服务域名。
+ 若App要指定独立部署的私有云域名，需按照以下字典{key: value}格式传值：
+ {
+ "openAPIInfo": "xxx", // NSString类型，api服务域名
+ "siteInfo": "xxx"  // NSString类型，site服务域名
+ "pushInfo": "xxx"  // NSString类型，推送服务域名
+ }
+ 其中，openAPIInfo和siteInfo必须传值，pushInfo可选。
  
  不指定端口号，默认使用80端口，形如：api.gizwits.com
  如果要指定特殊端口号，需同时指定Http和Https端口，形如： xxx.gizwits.com:81&8443
@@ -453,6 +479,7 @@
  当手机能访问外网时，该接口会向云端发起获取绑定设备列表请求；
  当手机不能访问外网时，局域网设备是实时发现的，但会保留之前已经获取过的绑定设备；
  手机处于无网模式时，局域网未绑定设备会消失，但会保留之前已经获取过的绑定设备；
+ 此接口传入的uid、token，如果长度错误，SDK会继续使用之前的uid、token作处理
  
  @param uid 用户登录或注册时得到的 uid
  @param token 用户登录或注册时得到的 token
@@ -827,7 +854,19 @@
 
 @property (strong, nonatomic, readonly) NSString *domain;
 
+/*
+ 获取可以设置域名的设备列表。返回的设备列表中只包括支持设置域名功能的设备。
+ @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didGetDevicesToSetServerInfo:devices:]
+ */
 + (void)getDevicesToSetServerInfo;
+
+/*
+ 给模组设置域名。每次只能设置一个设备，如果要批量设置请重复调用该接口
+ @param domain 待设置的域名，域名格式：api.xxxxxx.com。若该参数为nil，SDK将为设备设置机智云全球部署服务域名。
+ 若要让设备连接独立部署的私有云域名，该参数应为对应的私有云域名字符串。请注意需保证传入的域名是有效的，否则可能导致设备无法正常工作
+ @param mac 待设置的设备mac
+ @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didSetDeviceServerInfo:mac:]
+ */
 + (void)setDeviceServerInfo:(NSString *)domain mac:(NSString *)mac;
 
 @end
