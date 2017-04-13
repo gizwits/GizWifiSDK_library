@@ -23,6 +23,7 @@
 #import <GizWifiSDK/GizDeviceSceneCenter.h>
 #import <GizWifiSDK/GizDeviceSceneItem.h>
 #import <GizWifiSDK/GizDeviceScene.h>
+#import <GizWifiSDK/GizDeviceSchedulerTask.h>
 
 @class GizWifiSDK;
 
@@ -90,7 +91,7 @@
  @param productUI 下载的 Json 格式的产品 UI 信息
  @see GizWifiErrorCode
  */
-- (void)wifiSDK:(GizWifiSDK *)wifiSDK didUpdateProduct:(NSError *)result producKey:(NSString *)productKey productUI:(NSString *)productUI;
+- (void)wifiSDK:(GizWifiSDK *)wifiSDK didUpdateProduct:(NSError *)result producKey:(NSString *)productKey productUI:(NSString *)productUI DEPRECATED_ATTRIBUTE;
 
 /*
  @deprecated 此接口已废弃，不再提供支持。请使用替代接口：[GizWifiSDKDelegate wifiSDK:didUpdateProduct:producKey:productName:productUI:]
