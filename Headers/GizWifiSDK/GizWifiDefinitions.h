@@ -124,7 +124,27 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
      日志级别无效
      */
     GIZ_SDK_LOG_LEVEL_INVALID = 8009,
+    /*
+     uid参数无效
+     */
+    GIZ_SDK_UID_INVALID = 8010,
+    /*
+     token参数无效
+     */
+    GIZ_SDK_TOKEN_INVALID = 8011,
+    /*
+     用户未登录
+     */
+    GIZ_SDK_USER_NOT_LOGIN = 8012,
     
+    /*
+     设备标识不在指定的产品标识列表内
+     */
+    GIZ_SDK_PRODUCTKEY_NOT_IN_SPECIAL_LIST = 8018,
+    /*
+     设备标识跟当前应用标识未关联
+     */
+    GIZ_SDK_PRODUCTKEY_NOT_RELATED_WITH_APPID = 8019,
     /*
      批量设置设备域名信息时没有可用设备
      */
