@@ -6,10 +6,10 @@
 //  Copyright © 2016年 gizwits. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
 #import <GizWifiSDK/GizDeviceSharingInfo.h>
 #import <GizWifiSDK/GizMessage.h>
+
+@class UIImage;
 
 @protocol GizDeviceSharingDelegate <NSObject>
 @optional
@@ -18,11 +18,11 @@
  获取设备已绑定用户的回调
  @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败。失败时，bindUsers回调参数为 nil
  @param deviceID 发起查询的设备ID
- @param bindUsers NSString类型数组，设备的已绑定用户列表。失败时为nil
+ @param bindUsers GizUserInfo类型数组，设备的已绑定用户列表。失败时为nil
  @see 触发函数：[GizDeviceSharing getBindingUsers:deviceID:];
  @see GizWifiErrorCode
  */
-- (void)didGetBindingUsers:(NSError *)result deviceID:(NSString *)deviceID bindUsers:(NSArray *)bindUsers;
+- (void)didGetBindingUsers:(NSError * _Nonnull)result deviceID:(NSString * _Nullable)deviceID bindUsers:(NSArray <GizUserInfo *>* _Nullable)bindUsers;
 
 /*
  解绑设备已绑用户的回调
@@ -32,7 +32,7 @@
  @see 触发函数：[GizDeviceSharing unbindUser:deviceID:guestUID:];
  @see GizWifiErrorCode
  */
-- (void)didUnbindUser:(NSError *)result deviceID:(NSString *)deviceID guestUID:(NSString *)guestUID;
+- (void)didUnbindUser:(NSError * _Nonnull)result deviceID:(NSString * _Nullable)deviceID guestUID:(NSString * _Nullable)guestUID;
 
 /*
  获取分享邀请列表的回调
@@ -42,7 +42,7 @@
  @see 触发函数：[GizDeviceSharing getDeviceSharingInfos:sharingType:deviceID:];
  @see GizWifiErrorCode
  */
-- (void)didGetDeviceSharingInfos:(NSError *)result deviceID:(NSString *)deviceID deviceSharingInfos:(NSArray *)deviceSharingInfos;
+- (void)didGetDeviceSharingInfos:(NSError * _Nonnull)result deviceID:(NSString * _Nullable)deviceID deviceSharingInfos:(NSArray <GizDeviceSharingInfo *>* _Nullable)deviceSharingInfos;
 
 /*
  创建分享邀请的回调
@@ -53,7 +53,7 @@
  @see 触发函数：[GizDeviceSharing sharingDevice:deviceID:sharingWay:guestUser:guestUserType:];
  @see GizWifiErrorCode
  */
-- (void)didSharingDevice:(NSError *)result deviceID:(NSString *)deviceID sharingID:(NSInteger)sharingID QRCodeImage:(UIImage *)QRCodeImage;
+- (void)didSharingDevice:(NSError * _Nonnull)result deviceID:(NSString * _Nullable)deviceID sharingID:(NSInteger)sharingID QRCodeImage:(UIImage * _Nullable)QRCodeImage;
 
 /*
  撤回分享邀请的回调
@@ -62,7 +62,7 @@
  @see 触发函数：[GizDeviceSharing revokeDeviceSharing:sharingID:];
  @see GizWifiErrorCode
  */
-- (void)didRevokeDeviceSharing:(NSError *)result sharingID:(NSInteger)sharingID;
+- (void)didRevokeDeviceSharing:(NSError * _Nonnull)result sharingID:(NSInteger)sharingID;
 
 /*
  接受分享邀请的回调
@@ -71,7 +71,7 @@
  @see 触发函数：[GizDeviceSharing acceptDeviceSharing:sharingID:accept:];
  @see GizWifiErrorCode
  */
-- (void)didAcceptDeviceSharing:(NSError *)result sharingID:(NSInteger)sharingID;
+- (void)didAcceptDeviceSharing:(NSError * _Nonnull)result sharingID:(NSInteger)sharingID;
 
 /*
  查看二维码邀请信息的回调
@@ -83,7 +83,7 @@
  @see 触发函数：[GizDeviceSharing checkDeviceSharingInfoByQRCode:QRCode:];
  @see GizWifiErrorCode
  */
-- (void)didCheckDeviceSharingInfoByQRCode:(NSError *)result userName:(NSString *)userName productName:(NSString *)productName deviceAlias:(NSString *)deviceAlias expiredAt:(NSString *)expiredAt;
+- (void)didCheckDeviceSharingInfoByQRCode:(NSError * _Nonnull)result userName:(NSString * _Nullable)userName productName:(NSString * _Nullable)productName deviceAlias:(NSString * _Nullable)deviceAlias expiredAt:(NSString * _Nullable)expiredAt;
 
 /*
  扫码接受分享邀请的回调
@@ -91,7 +91,7 @@
  @see 触发函数：[GizDeviceSharing acceptDeviceSharingByQRCode:QRCode:];
  @see GizWifiErrorCode
  */
-- (void)didAcceptDeviceSharingByQRCode:(NSError *)result;
+- (void)didAcceptDeviceSharingByQRCode:(NSError * _Nonnull)result;
 
 /*
  修改分享邀请别名的回调
@@ -100,7 +100,7 @@
  @see 触发函数：[GizDeviceSharing modifySharingInfo:sharingID:sharingAlias:];
  @see GizWifiErrorCode
  */
-- (void)didModifySharingInfo:(NSError *)result sharingID:(NSInteger)sharingID;
+- (void)didModifySharingInfo:(NSError * _Nonnull)result sharingID:(NSInteger)sharingID;
 
 /*
  查询消息列表的回调
@@ -109,7 +109,7 @@
  @see 触发函数：[GizDeviceSharing queryMessageList:messageType:];
  @see GizWifiErrorCode
  */
-- (void)didQueryMessageList:(NSError *)result messageList:(NSArray *)messageList;
+- (void)didQueryMessageList:(NSError * _Nonnull)result messageList:(NSArray <GizMessage *>* _Nullable)messageList;
 
 /*
  标记或删除消息的回调
@@ -118,7 +118,7 @@
  @see 触发函数：[GizDeviceSharing markMessageStatus:messageID:messageStatus:];
  @see GizWifiErrorCode
  */
-- (void)didMarkMessageStatus:(NSError *)result messageID:(NSString *)messageID;
+- (void)didMarkMessageStatus:(NSError * _Nonnull)result messageID:(NSString * _Nullable)messageID;
 
 @end
 
@@ -135,7 +135,7 @@
  设置定时任务委托
  @param delegate 设备分享的委托
  */
-+ (void)setDelegate:(id <GizDeviceSharingDelegate>)delegate;
++ (void)setDelegate:(id <GizDeviceSharingDelegate> _Nullable)delegate;
 
 /*
  查询设备的已绑定用户列表。只有owner用户才能查询设备的已绑用户
@@ -143,7 +143,7 @@
  @param deviceID 要查询的设备did
  @see 对应的回调接口：[GizDeviceSharingDelegate didGetBindingUsers:deviceID:bindUsers:];
  */
-+ (void)getBindingUsers:(NSString *)token deviceID:(NSString *)deviceID;
++ (void)getBindingUsers:(NSString * _Nonnull)token deviceID:(NSString * _Nonnull)deviceID;
 
 /*
  解绑设备的已绑定用户。只有owner才能解绑其他已绑用户
@@ -151,7 +151,7 @@
  @param deviceID 要解绑用户的设备ID
  @see 对应的回调接口：[GizDeviceSharingDelegate didUnbindUser:deviceID:guestUID:];
  */
-+ (void)unbindUser:(NSString *)token deviceID:(NSString *)deviceID guestUID:(NSString *)guestUID;
++ (void)unbindUser:(NSString * _Nonnull)token deviceID:(NSString * _Nonnull)deviceID guestUID:(NSString * _Nonnull)guestUID;
 
 /*
  查询设备的分享邀请列表。可以查询自己发起的分享邀请，或者查询分享给自己的分享邀请，owner和guest用户都可以查询
@@ -160,7 +160,7 @@
  @param deviceID 查询分享邀请的设备ID。如果是guest用户，可查询所有邀请。如果是owner用户，可以指定设备ID查询，也可以不指定设备ID查询
  @see 对应的回调接口：[GizDeviceSharingDelegate didGetDeviceSharingInfos:deviceID:deviceSharingInfos:];
  */
-+ (void)getDeviceSharingInfos:(NSString *)token sharingType:(GizDeviceSharingType)sharingType deviceID:(NSString *)deviceID;
++ (void)getDeviceSharingInfos:(NSString * _Nonnull)token sharingType:(GizDeviceSharingType)sharingType deviceID:(NSString * _Nullable)deviceID;
 
 /*
  创建分享邀请。special和owner用户可以通过账号分享或二维码分享的方式分享设备。账号分享邀请24小时后失效，二维码邀请15分钟后失效
@@ -171,7 +171,7 @@
  @param guestUserType 账号分享时，该参数需要指定用户名是哪种类型，见GizUserAccountType枚举定义。如果是通过用户的uid分享的，此变量应为GizUserOther，其他按照对应的用户类型传值
  @see 对应的回调接口：[GizDeviceSharingDelegate didSharingDevice:deviceID:sharingID:QRCodeImage:];
  */
-+ (void)sharingDevice:(NSString *)token deviceID:(NSString *)deviceID sharingWay:(GizDeviceSharingWay)sharingWay guestUser:(NSString *)guestUser guestUserType:(GizUserAccountType)guestUserType;
++ (void)sharingDevice:(NSString * _Nonnull)token deviceID:(NSString * _Nonnull)deviceID sharingWay:(GizDeviceSharingWay)sharingWay guestUser:(NSString * _Nullable)guestUser guestUserType:(GizUserAccountType)guestUserType;
 
 /*
  撤回分享邀请。只有owner才能撤回自己的分享邀请，已经发出的分享邀请，可以随时撤回。一旦撤回成功，guest用户会被解绑不能使用该设备
@@ -179,7 +179,7 @@
  @param sharingID 要撤回的分享邀请ID
  @see 对应的回调接口：[GizDeviceSharingDelegate didRevokeDeviceSharing:sharingID:];
  */
-+ (void)revokeDeviceSharing:(NSString *)token sharingID:(NSInteger)sharingID;
++ (void)revokeDeviceSharing:(NSString * _Nonnull)token sharingID:(NSInteger)sharingID;
 
 /*
  接受分享邀请。owner用户以账号方式分享设备后，guest账号可以接受或拒绝邀请
@@ -188,7 +188,7 @@
  @param accept 接受或拒绝邀请。YES表示接受，NO表示拒绝
  @see 对应的回调接口：[GizDeviceSharingDelegate didAcceptDeviceSharing:sharingID:];
  */
-+ (void)acceptDeviceSharing:(NSString *)token sharingID:(NSInteger)sharingID accept:(BOOL)accept;
++ (void)acceptDeviceSharing:(NSString * _Nonnull)token sharingID:(NSInteger)sharingID accept:(BOOL)accept;
 
 /*
  查看二维码邀请信息。owner用户不能查看二维码邀请信息
@@ -196,7 +196,7 @@
  @param QRCode 二维码邀请内容。App扫描邀请二维码时，按照以下格式解析出type和code内容：type=share&code=xxxxxxxxxx。把解析出来的code内容传入此参数
  @see 对应的回调接口：[GizDeviceSharingDelegate didCheckDeviceSharingInfoByQRCode:userName:productName:deviceAlias:expiredAt:];
  */
-+ (void)checkDeviceSharingInfoByQRCode:(NSString *)token QRCode:(NSString *)QRCode;
++ (void)checkDeviceSharingInfoByQRCode:(NSString * _Nonnull)token QRCode:(NSString * _Nonnull)QRCode;
 
 /*
  接受二维码分享邀请。owner用户不能调用此接口
@@ -204,7 +204,7 @@
  @param QRCode 二维码邀请内容。App扫描邀请二维码时，按照以下格式解析出type和code内容：type=share&code=xxxxxxxxxx。把解析出来的code内容传入此参数
  @see 对应的回调接口：[GizDeviceSharingDelegate didAcceptDeviceSharingByQRCode:];
  */
-+ (void)acceptDeviceSharingByQRCode:(NSString *)token QRCode:(NSString *)QRCode;
++ (void)acceptDeviceSharingByQRCode:(NSString * _Nonnull)token QRCode:(NSString * _Nonnull)QRCode;
 
 /*
  修改分享邀请别名
@@ -213,7 +213,7 @@
  @param sharingAlias 要修改的分享邀请别名
  @see 对应的回调接口：[GizDeviceSharingDelegate didModifySharingInfo:sharingID:];
  */
-+ (void)modifySharingInfo:(NSString *)token sharingID:(NSInteger)sharingID sharingAlias:(NSString *)sharingAlias;
++ (void)modifySharingInfo:(NSString * _Nonnull)token sharingID:(NSInteger)sharingID sharingAlias:(NSString * _Nullable)sharingAlias;
 
 /*
  查询消息列表。可查询分享消息
@@ -221,7 +221,7 @@
  @param messageType 要查询的消息类型，见GizMessageType枚举定义
  @see 对应的回调接口：[GizDeviceSharingDelegate didQueryMessageList:messageList:];
  */
-+ (void)queryMessageList:(NSString *)token messageType:(GizMessageType)messageType;
++ (void)queryMessageList:(NSString * _Nonnull)token messageType:(GizMessageType)messageType;
 
 /*
  标记消息已读或删除
@@ -230,6 +230,6 @@
  @param messageStatus 标记为已读或者删除，见GizMessageStatus枚举定义
  @see 对应的回调接口：[GizDeviceSharingDelegate didMarkMessageStatus:messageID:];
  */
-+ (void)markMessageStatus:(NSString *)token messageID:(NSString *)messageID messageStatus:(GizMessageStatus)messageStatus;
++ (void)markMessageStatus:(NSString * _Nonnull)token messageID:(NSString * _Nonnull)messageID messageStatus:(GizMessageStatus)messageStatus;
 
 @end

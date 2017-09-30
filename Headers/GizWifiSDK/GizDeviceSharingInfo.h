@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GizWifiSDK/GizWifiDefinitions.h>
 
 @class GizUserInfo;
 
@@ -22,23 +23,23 @@
 /*
  NSString类型，只读不可写。设备ID
  */
-@property (strong, nonatomic, readonly) NSString *deviceID;
+@property (strong, nonatomic, readonly) NSString * _Nonnull deviceID;
 /*
  NSString类型，只读不可写。设备的产品名称
  */
-@property (strong, nonatomic, readonly) NSString *productName;
+@property (strong, nonatomic, readonly) NSString * _Nonnull productName;
 /*
  NSString类型，只读不可写。设备的产品名称
  */
-@property (strong, nonatomic, readonly) NSString *deviceAlias;
+@property (strong, nonatomic, readonly) NSString * _Nonnull deviceAlias;
 /*
  GizUserInfo类对象，只读不可写。这条分享邀请的账号信息，分享者或者被分享者的账号信息
  */
-@property (strong, nonatomic, readonly) GizUserInfo *userInfo;
+@property (strong, nonatomic, readonly) GizUserInfo * _Nonnull userInfo;
 /*
  NSString类型，只读不可写。这条分享邀请的别名
  */
-@property (strong, nonatomic, readonly) NSString *alias;
+@property (strong, nonatomic, readonly) NSString * _Nonnull alias;
 /*
  GizDeviceSharingType枚举类型，只读不可写。分享邀请是分享给自己的还是自己分享给别人的
  */
@@ -54,14 +55,14 @@
 /*
  NSString类型，只读不可写。分享邀请的创建时间
  */
-@property (strong, nonatomic, readonly) NSString *createdAt;
+@property (strong, nonatomic, readonly) NSString * _Nonnull createdAt;
 /*
  NSString类型，只读不可写。分享邀请的更新时间
  */
-@property (strong, nonatomic, readonly) NSString *updatedAt;
+@property (strong, nonatomic, readonly) NSString * _Nonnull updatedAt;
 /*
  NSString类型，只读不可写。分享邀请的超时时间
  */
-@property (strong, nonatomic, readonly) NSString *expiredAt;
+@property (strong, nonatomic, readonly) NSString * _Nonnull expiredAt;
 
 @end

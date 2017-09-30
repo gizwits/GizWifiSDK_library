@@ -6,17 +6,21 @@
 //  Copyright © 2016年 gizwits. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <GizWifiSDK/GizWifiDefinitions.h>
+#import <GizWifiSDK/GizDeviceSchedulerSuper.h>
+#import <GizWifiSDK/GizDeviceSchedulerGateWay.h>
 
-@class GizWifiDevice;
+@class GizDeviceScheduler;
 
 @protocol GizDeviceSchedulerDelegate <NSObject>
 @optional
 
-- (void)didUpdateTasks:(NSString *)schedulerID result:(NSError *)result taskList:(NSArray *)taskList;
-- (void)didEnableScheduler:(NSString *)schedulerID result:(NSError *)result sn:(int)sn;
-- (void)didUpdateSchedulerEnableStatus:(NSString *)schedulerID result:(NSError *)result enableStatus:(BOOL)enableStatus;
+/**
+ 定时任务信息更新回调。修改定时任务信息、定时任务信息变化上报使用该回调接口
+ @param scheduler 触发回调的定时任务
+ @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS表示成功，其他为失败
+ @see 回调 [GizDeviceScheduler editSchedulerInfo:token:]
+ */
+- (void)scheduler:(GizDeviceScheduler * _Nullable)scheduler didUpdateSchedulerInfo:(NSError * _Nonnull)result;
 
 @end
 
@@ -24,70 +28,84 @@
  GizDeviceScheduler类是基于设备的定时任务类，可设置一次性定时任务、按月重复的定时任务、按周重复的定时任务。
  一次性定时任务是指只执行一次定时任务，按月重复定时任务是指在每月特定日期执行定时任务，按周重复定时任务是指在每周特定时间执行定时任务。
  */
-@interface GizDeviceScheduler : NSObject
+@interface GizDeviceScheduler : GizDeviceSchedulerSuper
 
-- (GizDeviceScheduler *)init;
-
-@property (weak, nonatomic, readonly) GizWifiDevice *schedulerOwner;
-/*
- NSString类型，只读不可写。定时任务ID，定时任务创建成功时会被分配一个ID
+/**
+ @deprecated 此接口已废弃，将在2.09.09版本后不再提供支持，请尽快替换对应的构造函数
+ @see [GizDeviceScheduler initSchedulerOneTime:date:time:enabled:remark:startDate:endDate:]
+ @see [GizDeviceScheduler initSchedulerWeekRepeat:time:weekDays:enabled:remark:startDate:endDate:]
+ @see [GizDeviceScheduler initSchedulerMonthRepeat:time:monthDays:enabled:remark:startDate:endDate:]
  */
-@property (strong, nonatomic, readonly) NSString *schedulerID;
+- (GizDeviceScheduler * _Nullable)init DEPRECATED_ATTRIBUTE;
+
+/**
+GizDeviceScheduler构造函数，用于在云端创建一次性定时任务
+@param attrs 定时任务操作键值对字典：{操作名字: 操作值}，请注意不支持透传数据。此参数不能填nil或空字典
+@param date 定时任务的预设日期，格式形如：1990-10-03。定时任务将在预设日期这一天到达时执行。此参数不能填nil或空串，如果填写了过去日期或者不符合约定格式，无法在云端创建定时任务
+@param time 定时任务的预设时间，24小时制，格式形如：07:08。定时任务将在预设时间到达时执行。此参数不能填nil或空串，必须符合约定格式，否则无法在云端创建定时任务
+@param enabled 定时任务是否开启。true表示开启，false表示不开启
+@param remark 定时任务备注信息。此参数可选填，可填nil
+*/
++ (instancetype _Nullable)schedulerOneTime:(NSDictionary * _Nonnull)attrs date:(NSString * _Nonnull)date time:(NSString * _Nonnull)time enabled:(BOOL)enabled remark:(NSString * _Nullable)remark;
+
+/**
+ GizDeviceScheduler构造函数，用于在云端创建按周重复定时任务
+ @param attrs 定时任务操作键值对字典：{操作名字: 操作值}，请注意不支持透传数据。此参数不能为nil或空字典
+ @param time 定时任务的预设时间，24小时制，格式形如：07:08。此参数不能填nil或空串，必须符合约定格式。定时任务将在预设时间到达时执行
+ @param weekDays 按周重复，GizScheduleWeekday数组。定时任务可以预设为每周的某几天重复执行。此参数不能填nil或空数组，数组中重复的值会被合并，无效值会被滤除，如果滤除后数组大小为0按空数组处理
+ @param enabled 定时任务是否开启。true表示开启，false表示不开启
+ @param remark 定时任务备注信息。此参数可选填，可填nil
+ */
++ (instancetype _Nullable)schedulerWeekRepeat:(NSDictionary * _Nonnull)attrs time:(NSString * _Nonnull)time weekDays:(NSArray * _Nonnull)weekDays enabled:(BOOL)enabled remark:(NSString * _Nullable)remark;
+
+/**
+ GizDeviceScheduler构造函数，用于在云端创建按天重复定时任务
+ @param attrs 定时任务操作键值对字典：{操作名字: 操作值}，请注意不支持透传数据。此参数不能为nil或空字典
+ @param time 定时任务的预设时间，24小时制，格式形如：07:08。此参数不能填nil或空串，必须符合约定格式，否则无法创建定时任务。定时任务将在预设时间到达时执行
+ @param monthDays 按天重复，GizScheduleWeekday数组。定时任务可以预设为每周的某几天重复执行。此参数不能填nil或空数组，数组中重复的值会被合并，无效值会被滤除，如果滤除后数组大小为0按空数组处理
+ @param enabled 定时任务是否开启。true表示开启，false表示不开启
+ @param remark 定时任务备注信息。此参数可选填，可传nil
+ */
++ (instancetype _Nullable)schedulerDayRepeat:(NSDictionary * _Nonnull)attrs time:(NSString * _Nonnull)time monthDays:(NSArray * _Nonnull)monthDays enabled:(BOOL)enabled remark:(NSString * _Nullable)remark;
+
 /*
  NSString类型，只读不可写。定时任务的创建时间
  */
-@property (strong, nonatomic, readonly) NSString *createdDateTime;
-@property (strong, nonatomic, readonly) NSArray *taskList;
-/*
- NSString类型，可读写。定时任务的执行日期，年月日以“－”符号分割，例如：2017-01-30。此变量默认值为nil
- */
-@property (strong, nonatomic) NSString *date;
-/*
- NSString类型，可读写。定时任务的执行时间，24小时制，例如：06:30。无论是一次性定时任务还是按周、按月重复的定时任务，必须指定执行时间，此变量必须有值
- */
-@property (strong, nonatomic) NSString *time;
-/*
- GizScheduleWeekday枚举类型数组，可读写。此变量为nil，表示定时任务不需要按周重复。需要按周重复时，此变量可填写为一周中的某一天或者某几天，例如：想在周一和周三执行定时任务，就把GizScheduleMonday、GizScheduleWednesday这两个值放到数组里。此变量默认值为nil。
- 说明：定时任务是按周重复还是按月重复，只能二选一。如果定时任务是按周重复，则忽略按月重复。例如：weekdays和monthDays都被赋值时，会优先取weekdays的值
- */
-@property (strong, nonatomic) NSArray *weekdays;
-/*
- NSInteger类型数组，可读写。此变量为nil，表示定时任务不需要按月重复。需要按月重复时，此变量可填写为一个月中的某一天或某几天。例如，想在一个月的1号和15号执行定时任务，可把1、15这两个值放到数组里。此变量默认值为nil。
- 说明：定时任务是按周重复还是按月重复，只能二选一。如果定时任务是按月重复，需要把按周重复变量weekdays清空，按月重复才能生效
- */
-@property (strong, nonatomic) NSArray *monthDays;
-/*
- BOOL类型，可读写。值为TRUE表示启动定时任务，默认值为TRUE
- */
-@property (assign, nonatomic) BOOL enabled;
+@property (strong, nonatomic, readonly) NSString * _Nonnull createdDateTime;
 /*
  NSString类型，可读写。定时任务备注信息，默认值为nil
  */
-@property (strong, nonatomic) NSString *remark;//只用于普通设备
+@property (strong, nonatomic, getter=lastRemark) NSString * _Nullable remark;//只用于普通设备
 /*
  NSString类型，可读写。定时任务启动日期，年月日以“－”符号分割。格式为：2017-01-29。默认值为nil
  */
-@property (strong, nonatomic) NSString *startDate;//只用于普通设备
+@property (strong, nonatomic, getter=lastStartDate) NSString * _Nullable startDate;//只用于普通设备
 /*
  NSString类型，可读写。定时任务启动日期，年月日以“－”符号分割。格式为：2017-01-29。默认值为nil
  */
-@property (strong, nonatomic) NSString *endDate;//只用于普通设备
+@property (strong, nonatomic, getter=lastEndDate) NSString * _Nullable endDate;//只用于普通设备
 /*
  NSDictionary类型，可读写。定时任务要执行的动作，为数据点名称和值的键值对。定时任务必须指定要执行的动作，否则无法创建定时任务。此变量必须有值
  */
-@property (strong, nonatomic) NSDictionary *attrs;//只用于普通设备
-
-@property (strong, nonatomic) NSString *name; //只用于中控设备
-@property (assign, nonatomic) BOOL delay; //只用于中控设备
+@property (strong, nonatomic, getter=lastAttrs) NSDictionary * _Nullable attrs;//只用于普通设备
 
 @property (assign, nonatomic) GizScheduleRepeatRule repeatRule DEPRECATED_ATTRIBUTE;
 @property (assign, nonatomic) NSInteger repeatCount DEPRECATED_ATTRIBUTE;
 
-@property (weak, nonatomic) id<GizDeviceSchedulerDelegate> delegate;
+/**
+ GizDeviceScheduler委托
+ @see GizDeviceSchedulerDelegate
+ */
+@property (weak, nonatomic) id<GizDeviceSchedulerDelegate> _Nullable delegate;
 
-- (void)editTasks:(NSArray *)tasks;
-- (void)updateTasks;
-- (void)enableScheduler:(BOOL)enable sn:(int)sn;
-- (void)updateSchedulerEnableStatus;
+/**
+ 修改定时任务信息，此接口可用于修改云端或中控的定时任务信息。请注意，必须要先修改对应的变量值，然后再调用此接口完成修改。修改成功时返回最新的定时任务信息，修改失败时返回错误信息
+ @param uid 用户ID。对于中控定时任务此参数为选填，对于云端定时任务此参数为必填，即传nil表示要创建中控定时任务，传非nil表示要创建云端定时任务。请注意，创建云端定时任务时不能填空串和无效值
+ @param token 用户token。对于中控定时任务此参数为选填，对于云端定时任务此参数为必填，即传nil表示要创建中控定时任务，传非nil表示要创建云端定时任务。请注意，创建云端定时任务时不能填空串和无效值
+ @param schedulerType 定时任务类型，GizSchedulerType枚举。详细见变量schedulerType说明
+ @see 回调 [GizDeviceSchedulerDelegate scheduler:didUpdateSchedulerInfo:]
+ */
+- (void)editSchedulerInfo:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token type:(GizSchedulerType)type;
 
 @end
+

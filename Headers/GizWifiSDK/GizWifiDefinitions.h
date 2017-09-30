@@ -136,7 +136,27 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
      用户未登录
      */
     GIZ_SDK_USER_NOT_LOGIN = 8012,
+    /*
+     AppID无效
+     */
+    GIZ_SDK_APPID_INVALID = 8013,
+    /*
+     App secret无效
+     */
+    GIZ_SDK_APP_SECRET_INVALID = 8014,
+    /*
+     产品标识无效
+     */
+    GIZ_SDK_PRODUCT_KEY_INVALID = 8015,
+    /*
+     产品秘钥无效
+     */
+    GIZ_SDK_PRODUCT_SECRET_INVALID = 8016,
     
+    /*
+     设备不在本地(小循环)
+     */
+    GIZ_SDK_DEVICE_NOT_IN_LAN = 8017,
     /*
      设备标识不在指定的产品标识列表内
      */
@@ -310,6 +330,56 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_SDK_THREAD_CREATE_FAILED = 8102,
     
     /*
+     定时任务创建失败
+     */
+    GIZ_SDK_SCHEDULER_CREATE_FAILED = 8120,
+    /*
+     定时任务删除失败
+     */
+    GIZ_SDK_SCHEDULER_DELETE_FAILED = 8121,
+    /*
+     定时任务信息编辑失败
+     */
+    GIZ_SDK_SCHEDULER_EDIT_FAILED = 8122,
+    /*
+     定时任务列表更新失败
+     */
+    GIZ_SDK_SCHEDULER_LIST_UPDATE_FAILED = 8123,
+    /*
+     定时任务的执行内容编辑失败
+     */
+    GIZ_SDK_SCHEDULER_TASK_EDIT_FAILED = 8124,
+    /*
+     定时任务的执行列表更新失败
+     */
+    GIZ_SDK_SCHEDULER_TASK_LIST_UPDATE_FAILED = 8125,
+    /*
+     定时任务ID无效
+     */
+    GIZ_SDK_SCHEDULER_ID_INVALID = 8126,
+    /*
+     定时任务开启或关闭失败
+     */
+    GIZ_SDK_SCHEDULER_ENABLE_DISABLE_FAILED = 8127,
+    /*
+     定时任务状态更新失败
+     */
+    GIZ_SDK_SCHEDULER_STATUS_UPDATE_FAILED = 8128,
+    
+    /*
+     添加子设备失败
+     */
+    GIZ_SDK_SUBDEVICE_ADD_FAILED = 8140,
+    /*
+     删除子设备失败
+     */
+    GIZ_SDK_SUBDEVICE_DELETE_FAILED = 8141,
+    /*
+     子设备列表更新失败
+     */
+    GIZ_SDK_SUBDEVICE_LIST_UPDATE_FAILED = 8142,
+    
+    /*
      组ID无效
      */
     GIZ_SDK_GROUP_ID_INVALID = 8150,
@@ -329,7 +399,85 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
      组设备获取失败
      */
     GIZ_SDK_GROUP_GET_DEVICE_FAILED = 8154,
+    /*
+     创建组失败
+     */
+    GIZ_SDK_GROUP_CREATE_FAILED = 8155,
+    /*
+     删除组失败
+     */
+    GIZ_SDK_GROUP_DELETE_FAILED = 8156,
+    /*
+     编辑组失败
+     */
+    GIZ_SDK_GROUP_EDIT_FAILED = 8157,
+    /*
+     组列表更新失败
+     */
+    GIZ_SDK_GROUP_LIST_UPDATE_FAILED = 8158,
+    /*
+     组操作失败
+     */
+    GIZ_SDK_GROUP_COMMAND_WRITE_FAILED = 8159,
     
+    /*
+     创建场景失败
+     */
+    GIZ_SDK_SCENE_CREATE_FAILED = 8170,
+    /*
+     删除场景失败
+     */
+    GIZ_SDK_SCENE_DELETE_FAILED = 8171,
+    /*
+     编辑场景失败
+     */
+    GIZ_SDK_SCENE_EDIT_FAILED = 8172,
+    /*
+     场景列表更新失败
+     */
+    GIZ_SDK_SCENE_LIST_UPDATE_FAILED = 8173,
+    /*
+     场景项列表编辑失败
+     */
+    GIZ_SDK_SCENE_ITEM_LIST_EDIT_FAILED = 8174,
+    /*
+     场景项列表更新失败
+     */
+    GIZ_SDK_SCENE_ITEM_LIST_UPDATE_FAILED = 8175,
+    /*
+     场景ID无效
+     */
+    GIZ_SDK_SCENE_ID_INVALID = 8176,
+    /*
+     场景执行失败
+     */
+    GIZ_SDK_SCENE_RUN_FAILED = 8177,
+    /*
+     场景状态更新失败
+     */
+    GIZ_SDK_SCENE_STATUS_UPDATE_FAILED = 8178,
+    
+    /*
+     创建联动失败
+     */
+    GIZ_SDK_JOINT_ACTION_CREATE_FAILED = 8190,
+    /*
+     删除联动失败
+     */
+    GIZ_SDK_JOINT_ACTION_DELETE_FAILED = 8191,
+    /*
+     不支持的联动版本
+     */
+    GIZ_SDK_JOINT_ACTION_VER_UNSUPPORTED = 8193,
+    /*
+     无效的联动条件类型
+     */
+    GIZ_SDK_JOINT_ACTION_INVALID_CONDITION_TYPE = 8194,
+    /*
+     无效的联动结果事件类型
+     */
+    GIZ_SDK_JOINT_ACTION_INVALID_RESULT_EVENT_TYPE = 8195,
+
     /*
      配置文件还未下载
      */
@@ -405,37 +553,45 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
      */
     GIZ_SDK_OTA_FIRMWARE_IS_LATEST = 8350,
     /*
+     固件检查更新失败
+     */
+    GIZ_SDK_OTA_FIRMWARE_CHECK_UPDATE_FAILED = 8351,
+    /*
      固件下载成功
      */
-    GIZ_SDK_OTA_FIRMWARE_DOWNLOAD_OK = 8351,
+    GIZ_SDK_OTA_FIRMWARE_DOWNLOAD_OK = 8352,
     /*
      固件下载失败
      */
-    GIZ_SDK_OTA_FIRMWARE_DOWNLOAD_FAILED = 8352,
+    GIZ_SDK_OTA_FIRMWARE_DOWNLOAD_FAILED = 8353,
     /*
      设备忙，固件正在升级
      */
-    GIZ_SDK_OTA_DEVICE_BUSY_IN_UPGRADE = 8353,
+    GIZ_SDK_OTA_DEVICE_BUSY_IN_UPGRADE = 8354,
     /*
      固件推送失败
      */
-    GIZ_SDK_OTA_PUSH_FAILED = 8354,
+    GIZ_SDK_OTA_PUSH_FAILED = 8355,
     /*
      固件版本过低
      */
-    GIZ_SDK_OTA_FIRMWARE_VERSION_TOO_LOW = 8355,
+    GIZ_SDK_OTA_FIRMWARE_VERSION_TOO_LOW = 8356,
     /*
      固件校验失败
      */
-    GIZ_SDK_OTA_FIRMWARE_CHECK_FAILED = 8356,
+    GIZ_SDK_OTA_FIRMWARE_CHECK_FAILED = 8357,
     /*
      固件升级失败
      */
-    GIZ_SDK_OTA_UPGRADE_FAILED = 8357,
+    GIZ_SDK_OTA_UPGRADE_FAILED = 8358,
     /*
-     固件升级成功
+     固件校验成功
      */
-    GIZ_SDK_OTA_UPGRADE_SUCCESS = 8358,
+    GIZ_SDK_OTA_FIRMWARE_VERIFY_SUCCESS = 8359,
+    /*
+     设备不支持手机OTA升级
+     */
+    GIZ_SDK_OTA_DEVICE_NOT_SUPPORT = 8360,
     
     /*
      mac already registered!
@@ -622,6 +778,34 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
      */
     GIZ_OPENAPI_REGISTER_IS_BUSY = 9046,
     /*
+     appid has no relation with pk!
+     */
+    GIZ_OPENAPI_APPID_PK_NOT_RELATION = 9065,
+    /*
+     call innerapi failed!
+     */
+    GIZ_OPENAPI_CALL_INNER_FAILED = 9066,
+    /*
+     Device share not enabled for this product!
+     */
+    GIZ_OPENAPI_DEVICE_SHARING_NOT_ENABLED = 9068,
+    /*
+     You are not the first user of this device!
+     */
+    GIZ_OPENAPI_NOT_FIRST_USER_OF_DEVICE = 9069,
+    /*
+     App auth key invalid!
+     */
+    GIZ_OPENAPI_PRODUCT_KEY_AUTHEN_FAULT = 9072,
+    /*
+     operation in process, please try again later.
+     */
+    GIZ_OPENAPI_BUSY_NOW = 9073,
+    /*
+     App twitter consumer_key or consumer_secret not valid.
+     */
+    GIZ_OPENAPI_TWITTER_CONSUMER_KEY_INVALID = 9074,
+    /*
      can not share device to self!
      */
     GIZ_OPENAPI_CANNOT_SHARE_TO_SELF = 9080,
@@ -697,6 +881,18 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
      permission denied, you are not the receiver!
      */
     GIZ_OPENAPI_ONLY_RECEIVER_CAN_MARK_MESSAGE = 9101,
+    /*
+     guest not bind
+     */
+    GIZ_OPENAPI_GUEST_NOT_BIND = 9102,
+    /*
+     can not transfer owner privilege to self!
+     */
+    GIZ_OPENAPI_CANNOT_TRANSFER_OWNER_TO_SELF = 9103,
+    /*
+     can not transfer owner privilege to a time limited guest!
+     */
+    GIZ_OPENAPI_TRANSFER_OWNER_TO_LIMIT_GUEST = 9104,
     /*
      reserved
      */
@@ -909,26 +1105,30 @@ typedef NS_ENUM(NSInteger, XPGUserAccountType) {
  GizThirdAccountType枚举，描述SDK支持的第三方账号类型
  */
 typedef NS_ENUM(NSInteger, GizThirdAccountType) {
-    
     /*
      百度账号
      */
     GizThirdBAIDU = 0,
-    
     /*
      新浪账号
      */
     GizThirdSINA = 1,
-    
     /*
      QQ 账号
      */
     GizThirdQQ = 2,
-    
     /**
      微信帐号
      */
     GizThirdWeChat = 3,
+    /**
+     Facebook账号
+     */
+    GizThirdFacebook = 4,
+    /**
+     Twitter账号
+     */
+    GizThirdTwitter = 5,
 };
 
 /*
@@ -1057,6 +1257,9 @@ typedef NS_ENUM(NSInteger, GizPushType) {
      极光
      */
     GizPushJiGuang = 1,
+    /*
+     亚马逊推送
+     */
     GizPushAWS = 2,
 };
 
@@ -1209,11 +1412,21 @@ typedef NS_ENUM(NSInteger, GizMessageStatus) {
 };
 
 /*
+ 场景执行状态
  */
 typedef NS_ENUM(NSInteger, GizDeviceSceneStatus) {
-    GizDeviceSceneDone = 0,
+    /*
+     取消
+     */
+    GizDeviceSceneCancel = 0,
+    /*
+     启动
+     */
     GizDeviceSceneStart = 1,
-    GizDeviceSceneCancel = 2,
+    /*
+     结束
+     */
+    GizDeviceSceneDone = 2,
 };
 
 typedef NS_ENUM(NSInteger, GizDeviceSharingUserRole) {
@@ -1233,6 +1446,82 @@ typedef NS_ENUM(NSInteger, GizDeviceSharingUserRole) {
      Guest用户
      */
     GizDeviceSharingGuest = 3,
+};
+
+/*场景项类型*/
+typedef NS_ENUM(NSInteger, GizSceneItemType) {
+    /* 设备场景项 */
+    GizSceneItemDevice = 0,
+    /* 组场景项 */
+    GizSceneItemGroup = 1,
+    /* 延时场景项 */
+    GizSceneItemDelay = 2,
+};
+
+/*定时任务类型*/
+typedef NS_ENUM(NSInteger, GizSchedulerType) {
+    /** 延时任务 */
+    GizSchedulerDelay = 0,
+    /** 一次性定时任务 */
+    GizSchedulerOneTime = 1,
+    /** 按周重复定时任务 */
+    GizSchedulerWeekRepeat = 2,
+    /** 按天重复定时任务 */
+    GizSchedulerDayRepeat = 3,
+};
+
+/*定时任务项类型*/
+typedef NS_ENUM(NSInteger, GizSchedulerTaskType) {
+    /** 设备任务项 */
+    GizSchedulerTaskDevice = 0,
+    /** 组任务项 */
+    GizSchedulerTaskGroup = 1,
+    /** 场景任务项 */
+    GizSchedulerTaskScene = 2,
+};
+
+/*联动规则类型*/
+typedef NS_ENUM(NSInteger, GizLogicalOperator) {
+    /** 与 */
+    GizLogicalAnd = 0,
+    /** 或 */
+    GizLogicalOr = 1,
+};
+
+/*联动条件*/
+typedef NS_ENUM(NSInteger, GizConditionOperator) {
+    /** 相等 */
+    GizConditionEqual = 0,
+    /** 小于 */
+    GizConditionLessThan = 1,
+    /** 大于 */
+    GizConditionMoreThan = 2,
+    /** 小于等于 */
+    GizConditionLessThanOrEqual = 3,
+    /** 大于等于 */
+    GizConditionMoreThanOrEqual = 4,
+    /** 不相等 */
+    GizConditionNotEqual = 5,
+};
+
+/*联动规则项类型*/
+typedef NS_ENUM(NSInteger, GizJointActionRuleEventType) {
+    /** 设备事件 */
+    GizJointActionRuleEventDevice = 0,
+    /** 组事件 */
+    GizJointActionRuleEventGroup = 1,
+    /** 场景事件 */
+    GizJointActionRuleEventScene = 2,
+    /** 定时任务事件 */
+    GizJointActionRuleEventScheduler = 3,
+};
+
+/*固件类型*/
+typedef NS_ENUM(NSInteger, GizOTAFirmwareType) {
+    /** 设备的模组固件 */
+    GizOTAFirmareModule = 0,
+    /** 设备mcu固件 */
+    GizOTAFirmareMcu = 1,
 };
 
 #endif
