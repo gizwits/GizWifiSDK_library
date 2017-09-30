@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GizWifiSDK/GizWifiDefinitions.h>
 
 /*
  GizMessage类是机智云消息类。
@@ -16,7 +17,7 @@
 /*
  NSString类型，只读不可写。消息ID
  */
-@property (strong, nonatomic, readonly) NSString *id;
+@property (strong, nonatomic, readonly) NSString * _Nonnull id;
 /*
  GizMessageType枚举类型，只读不可写。消息类型，是系统消息还是分享消息
  */
@@ -28,14 +29,14 @@
 /*
  NSString类型，只读不可写。消息生成时间
  */
-@property (strong, nonatomic, readonly) NSString *createdAt;
+@property (strong, nonatomic, readonly) NSString * _Nonnull createdAt;
 /*
  NSString类型，只读不可写。消息更新时间
  */
-@property (strong, nonatomic, readonly) NSString *updatedAt;
+@property (strong, nonatomic, readonly) NSString * _Nonnull updatedAt;
 /*
  NSString类型，只读不可写。消息内容
  */
-@property (strong, nonatomic, readonly) NSString *content;
+@property (strong, nonatomic, readonly) NSString * _Nonnull content;
 
 @end

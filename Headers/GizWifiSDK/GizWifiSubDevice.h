@@ -6,7 +6,6 @@
 //  Copyright (c) 2015年 gizwits. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <GizWifiSDK/GizWifiDevice.h>
 
 /*

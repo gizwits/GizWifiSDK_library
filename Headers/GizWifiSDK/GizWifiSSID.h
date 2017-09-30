@@ -13,17 +13,17 @@
  */
 @interface GizWifiSSID : NSObject
 
-- (instancetype)init NS_UNAVAILABLE;
+- (instancetype _Nullable )init NS_UNAVAILABLE;
 
 /*
  SSID名。我们连接一个Wi-Fi热点时，可以搜索到的名字
  */
-@property (strong, nonatomic, readonly) NSString *ssid;
+@property (strong, nonatomic, readonly) NSString * _Nullable ssid;
 
 /*
  @deprecated 此变量已废弃，不再提供支持。替代变量为 ssid
  */
-@property (strong, nonatomic, readonly) NSString *name DEPRECATED_ATTRIBUTE;
+@property (strong, nonatomic, readonly) NSString * _Null_unspecified name DEPRECATED_ATTRIBUTE;
 
 /*
  热点对应的信号强度。取值范围 0-100

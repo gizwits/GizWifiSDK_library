@@ -16,19 +16,19 @@
 /*
  NSString类型。用户登录后得到的uid，提供get方法
  */
-@property (strong, nonatomic, readonly) NSString *uid;
+@property (strong, nonatomic, readonly) NSString * _Nonnull uid;
 /*
  NSString类型。用户名：手机号或者邮箱，只读不可写
  */
-@property (strong, nonatomic, readonly) NSString *username;
+@property (strong, nonatomic, readonly) NSString * _Nonnull username;
 /*
  NSString类型。用户邮箱，只读不可写
  */
-@property (strong, nonatomic, readonly) NSString *email;
+@property (strong, nonatomic, readonly) NSString * _Nonnull email;
 /*
  NSString类型。用户手机号，只读不可写
  */
-@property (strong, nonatomic, readonly) NSString *phone;
+@property (strong, nonatomic, readonly) NSString * _Nonnull phone;
 /*
  BOOL类型。是否为匿名用户，只读不可写
  */
@@ -36,11 +36,11 @@
 /*
  NSString类型。此变量只用于表示用户绑定设备的时间
  */
-@property (strong, nonatomic, readonly) NSString *deviceBindTime;
+@property (strong, nonatomic, readonly) NSString * _Nonnull deviceBindTime;
 /*
  NSString类型。用户昵称，可写
  */
-@property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic) NSString * _Nullable name;
 /*
  GizUserGenderType类型。用户性别，可写
  @see GizUserGenderType
@@ -53,18 +53,18 @@
 /*
  NSString类型。用户生日，可写
  */
-@property (strong, nonatomic) NSDate *birthday;
+@property (strong, nonatomic) NSDate * _Nullable birthday;
 /*
  NSString类型。用户家庭住址，可写
  */
-@property (strong, nonatomic) NSString *address;
+@property (strong, nonatomic) NSString * _Nullable address;
 /*
  NSString类型。用户的语言环境，只读不可写
  */
-@property (strong, nonatomic, readonly) NSString *lang;
+@property (strong, nonatomic, readonly) NSString * _Nullable lang;
 /*
  NSString类型。用户的备注信息，可写
  */
-@property (strong, nonatomic) NSString *remark;
+@property (strong, nonatomic) NSString * _Nullable remark;
 
 @end
