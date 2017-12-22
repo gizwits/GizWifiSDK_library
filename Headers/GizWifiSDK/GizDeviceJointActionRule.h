@@ -26,6 +26,6 @@
  @param conditionCombType 条件组合类型。conditions中只有一个条件时，忽略此变量。详细见类中的只读变量conditionCombType说明
  @param resultEvents 结果事件集合，GizDeviceJointActionRuleResultEvent对象数组。此参数不能填nil或空数组，可以填一个或多个事件
  */
-+ (id _Nullable)jointActionRule:(NSArray * _Nonnull)conditions conditionCombType:(GizLogicalOperator)conditionCombType resultEvents:(NSArray * _Nonnull)resultEvents;
++ (id _Nullable)jointActionRule:(NSArray <GizDeviceJointActionRuleCondition *>* _Nonnull)conditions conditionCombType:(GizLogicalOperator)conditionCombType resultEvents:(NSArray <GizDeviceJointActionRuleResultEvent *>* _Nonnull)resultEvents;
 
 @end
