@@ -43,7 +43,7 @@
  定时任务类型。见GizSchedulerType。每种类型涉及的信息如下：
  如果是云端定时任务，一次性定时任务需要关心schedulerID、createdDateTime、schedulerOwner、date、time、enabled，以及子类GizDeviceScheduler中的attrs，startDate、endDate、remark；
  如果是云端定时任务，按周重复定时任务需要关心schedulerID、createdDateTime、schedulerOwner、time、enabled，以及子类GizDeviceScheduler中的attrs、weekdays，startDate、endDate、remark；
- 如果是云端定时任务，按周重复定时任务需要关心schedulerID、createdDateTime、schedulerOwner、time、enabled，以及子类GizDeviceScheduler中的attrs、monthdays，startDate、endDate、remark；
+ 如果是云端定时任务，按天重复定时任务需要关心schedulerID、createdDateTime、schedulerOwner、time、enabled，以及子类GizDeviceScheduler中的attrs、monthdays，startDate、endDate、remark；
  如果是中控定时任务，延时任务需要关心schedulerID、schedulerOwner，以及子类GizDeviceSchedulerGateway中的delayTime、tasList，name；
  如果是中控定时任务，一次性定时任务需要关心schedulerID、schedulerOwner、date、time、enabled，以及子类GizDeviceSchedulerGateway中的tasList，name；
  如果是中控定时任务，按周重复定时任务需要关心schedulerID、schedulerOwner、time、enabled、weekdays，以及子类GizDeviceSchedulerGateway中的tasList，name；

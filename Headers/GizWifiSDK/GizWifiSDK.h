@@ -321,7 +321,7 @@
  注意：设备域名自动设置开启后会一直生效，但调用setDeviceServerInfo接口时将会终止自动设置
  @param appInfo 应用信息，格式：{"appId": "xxx", "appSecret": "xxx"}。此参数不能填nil，appId和appSecret必须为有效值。在机智云开发者中心 dev.gizwits.com 中，每个注册的设备在对应的“应用配置”中，都能够查到对应的 appID和appSecret
  @param productInfo 产品信息数组，格式：[{"productKey": "xxx", "productSecret": "xxx"}]，此参数为选填。如果填写了此参数，需保证productKey和productSecret为有效值，无效值会被忽略。SDK会根据此参数过滤设备列表
- @param cloudSeviceInfo 服务器域名信息，格式：{"openAPIInfo": "xxx", "siteInfo": "xxx", "pushInfo": ""}。如果使用机智云统一部署的云服务域名，此参数填nil，此时将根据用户手机的地理位置信息使用匹配的域名。如果需要独立部署，此参数必须指定域名信息。如果需要指定端口号，需同时指定Http和Https端口：xxx.gizwits.com:81&8443。不指定端口号时，形如：xxx.gizwits.com
+ @param cloudSeviceInfo 服务器域名信息，格式：{"openAPIInfo": "xxx", "siteInfo": "xxx", "pushInfo": ""}。如果使用机智云统一部署的云服务域名，此参数填nil，此时将根据用户手机的地理位置信息使用匹配的域名。如果需要独立部署，此参数必须指定域名信息。如果需要指定端口号，可指定Http端口如：xxx.gizwits.com:81，或同时指定Http和Https端口如：xxx.gizwits.com:81&8443。不指定端口号时，形如：xxx.gizwits.com
  @param autoSetDeviceDomain 是否要开启设备域名的自动设置功能。此参数默认值为NO，即不开启自动设置。参数值传YES则开启设备域名的自动设置功能，如果开启了设备域名的自动设置，小循环设备将被连接到App当前使用的云服务域名上
  @see 回调 [wifiSDK didNotifyEvent:eventSource:eventID:eventMessage:]
  */
@@ -380,8 +380,9 @@
 - (void)setDeviceOnboardingByBind:(NSString * _Nonnull)ssid key:(NSString * _Nullable)key configMode:(GizWifiConfigureMode)mode softAPSSIDPrefix:(NSString * _Nullable)softAPSSIDPrefix timeout:(int)timeout wifiGAgentType:(NSArray * _Nullable)types;
 
 /**
- 设备配网接口，配网时自动完成设备域名部署。此接口要求设备的wifi固件版本高于04020026
- 设备处于 softap 模式时，模组会产生一个热点名称，手机 wifi 连接此热点后就可以配置了。如果是机智云提供的固件，模组热点名称前缀为""XPG-GAgent-""，密码为""123456789""或无密码。设备处于 airlink 模式时，手机随时都可以开始配置。但无论哪种配置方式，设备上线时，手机要先连接到配置的局域网 wifi 上然后才能被绑定到用户账号下。
+ 设备配网接口。配网时可自动完成设备域名部署，此接口对模组固件版本向前兼容。
+ 设备处于 softap 模式时，模组会产生一个热点名称，手机 wifi 连接此热点后就可以配置了。如果是机智云提供的固件，模组热点名称前缀为"XPG-GAgent-"，密码为"123456789"或无密码。设备处于 airlink 模式时，手机随时都可以开始配置
+ 配网时，若检测到手机的配网wifi为5G路由，会通过didNotifyEvent回调通知App，回调中的eventID为8319
  @param ssid 待配置的路由SSID名。此参数不能为nil
  @param key 待配置的路由密码。此参数不能为nil
  @param mode 配置模式，详细见GizWifiConfigureMode枚举定义。此参数必须填有效范围内的值
@@ -423,31 +424,32 @@
 - (void)getBoundDevices:(NSString * _Nullable)uid token:(NSString * _Nullable)token;
 
 /**
- 绑定远端设备到服务器
+ 根据mac绑定设备
  @param uid 用户登录或注册时得到的 uid
  @param token 用户登录或注册时得到的 token
  @param mac 待绑定设备的mac
  @param productKey 待绑定设备的productKey
  @param productSecret 待绑定设备的productSecret
- @param appSecret 在 site 上的应用管理得到的 appSecret
+ @param beOwner 是否以owner身份绑定设备。此参数只对首次绑定的用户有效
  @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didBindDevice:did:]
  */
-- (void)bindRemoteDevice:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token mac:(NSString * _Nonnull)mac productKey:(NSString * _Nonnull)productKey productSecret:(NSString * _Nonnull)productSecret;
+- (void)bindRemoteDevice:(NSString * _Nonnull)uid token: (NSString * _Nonnull)token mac:(NSString * _Nonnull)mac productKey:(NSString * _Nonnull)productKey productSecret:(NSString * _Nonnull)productSecret beOwner:(BOOL)beOwner;
 
 /**
- 根据二维码绑定设备到服务器（此接口待发布）
+ 根据二维码绑定设备到服务器
  @param uid 用户登录或注册时得到的 uid
  @param token 用户登录或注册时得到的 token
- @param QRContent 二维码内容
+ @param QRContent 二维码内容。二维码需联系机智云FAE提供
+ @param beOwner 是否以owner身份绑定设备。此参数只对首次绑定的用户有效
  @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didBindDevice:did:]
  */
-- (void)bindDeviceByQRCode:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token QRContent:(NSString * _Nonnull)QRContent;
+- (void)bindDeviceByQRCode:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token QRContent:(NSString * _Nonnull)QRContent beOwner:(BOOL)beOwner;
 
 /**
  从服务器解绑设备
- @param 用户登录或注册时得到的uid
- @param 用户登录或注册时得到的token
- @param 待解绑设备的did
+ @param uid 用户登录或注册时得到的uid
+ @param token 用户登录或注册时得到的token
+ @param did 待解绑设备的did
  @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didUnbindDevice:did:]
  */
 - (void)unbindDevice:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token did:(NSString * _Nonnull)did;
@@ -505,6 +507,16 @@
  @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didUserLogin:uid:token:]
  */
 - (void)userLoginAnonymous;
+
+/**
+ * 动态验证码登录。登录用户名为手机号，以手机收到的登录验证码登录
+ * @param phone
+ *            手机号
+ * @param code
+ *            登录验证码
+ * @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didUserLogin:uid:token]
+ */
+- (void)dynamicLogin:(NSString * _Nonnull)phone code:(NSString * _Nonnull)code;
 
 /**
  用户登录。需使用注册成功的用户名、密码进行登录，可以是手机用户名、邮箱用户名或普通用户名
@@ -660,8 +672,12 @@
 - (void)setDeviceWifi:(NSString * _Null_unspecified)ssid key:(NSString * _Null_unspecified)key mode:(XPGConfigureMode)mode softAPSSIDPrefix:(NSString * _Null_unspecified)softAPSSIDPrefix timeout:(int)timeout wifiGAgentType:(NSArray * _Null_unspecified)types DEPRECATED_MSG_ATTRIBUTE("Please use setDeviceOnboarding:key:configMode:softAPSSIDPrefix:timeout:wifiGAgentType: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
 /** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK getBoundDevices:token:] */
 - (void)getBoundDevices:(NSString * _Nullable)uid token:(NSString * _Nullable)token specialProductKeys:(NSArray <NSString *>* _Nullable)specialProductKeys DEPRECATED_MSG_ATTRIBUTE("Please use getBoundDevices:token: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
-/** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK bindRemoteDevice:token:mac:productKey:productSecret:] */
-- (void)bindDeviceWithUid:(NSString * _Null_unspecified)uid token:(NSString * _Null_unspecified)token did:(NSString * _Null_unspecified)did passCode:(NSString * _Null_unspecified)passCode remark:(NSString * _Null_unspecified)remark DEPRECATED_MSG_ATTRIBUTE("Please use bindRemoteDevice:token:mac:productKey:productSecret: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
+/** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK bindRemoteDevice:token:mac:productKey:productSecret:beOwner:] */
+- (void)bindDeviceWithUid:(NSString * _Null_unspecified)uid token:(NSString * _Null_unspecified)token did:(NSString * _Null_unspecified)did passCode:(NSString * _Null_unspecified)passCode remark:(NSString * _Null_unspecified)remark DEPRECATED_MSG_ATTRIBUTE("Please use bindRemoteDevice:token:mac:productKey:productSecret:beOwner: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
+/** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK bindRemoteDevice:token:mac:productKey:productSecret:beOwner:] */
+- (void)bindRemoteDevice:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token mac:(NSString * _Nonnull)mac productKey:(NSString * _Nonnull)productKey productSecret:(NSString * _Nonnull)productSecret DEPRECATED_MSG_ATTRIBUTE("Please use bindRemoteDevice:token:mac:productKey:productSecret:beOwner: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
+/** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK bindDeviceByQRCode:token:QRContent:beOwner:] */
+- (void)bindDeviceByQRCode:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token QRContent:(NSString * _Nonnull)QRContent DEPRECATED_MSG_ATTRIBUTE("Please use bindDeviceByQRCode:token:QRContent:beOwner: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
 /** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK unbindDevice:token:did:] */
 - (void)unbindDeviceWithUid:(NSString * _Null_unspecified)uid token:(NSString * _Null_unspecified)token did:(NSString * _Null_unspecified)did passCode:(NSString * _Null_unspecified)passCode DEPRECATED_MSG_ATTRIBUTE("Please use unbindDevice:token:did: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
 /** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK registerUser:password:verifyCode:accountType:] */
