@@ -541,6 +541,8 @@ typedef NS_ENUM(NSInteger, GizWifiGAgentType) {
     GizGAgentAtmelEE = 10,
     /** 其他 */
     GizGAgentOther = 11,
+    /** 芯海模组 */
+    GizGAgentFlyLink = 12,
 };
 
 /**

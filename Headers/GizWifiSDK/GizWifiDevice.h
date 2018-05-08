@@ -185,6 +185,10 @@ extern NSString * _Null_unspecified XPGWifiDeviceHardwareProductKey DEPRECATED_M
  BOOL类型。设备是否定义了产品数据点
  */
 @property (assign, nonatomic, readonly) BOOL isProductDefined;
+/**
+ NSDictionary类型。缓存最新的设备状态
+ */
+@property (strong, nonatomic, readonly) NSDictionary <NSString *, id>* _Nullable attrStatus;
 @property (strong, nonatomic, readonly) NSString * _Nullable deviceModuleFirmwareVer;
 @property (strong, nonatomic, readonly) NSString * _Nullable deviceMcuFirmwareVer;
 @property (strong, nonatomic, readonly) NSString * _Nullable productUI;
