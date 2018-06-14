@@ -658,6 +658,11 @@
  */
 + (void)userFeedback:(NSString * _Nullable)contactInfo feedbackInfo:(NSString * _Nullable)feedbackInfo sendLog:(BOOL)sendLog;
 
+/**
+ 设置日志加密。此接口无回调。App若要设置日志加密，需要在调用sdk启动接口之前调用此接口。加密后，日志将不再输出到调试终端上
+ */
++ (void)encryptLog;
+
 /** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK startWithAppInfo:productInfo:cloudServiceInfo:autoSetDeviceDomain:] */
 + (void)startWithAppID:(NSString * _Null_unspecified)appID DEPRECATED_MSG_ATTRIBUTE("Please use startWithAppInfo:productInfo:cloudServiceInfo:autoSetDeviceDomain:") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
 /** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiSDK startWithAppInfo:productInfo:cloudServiceInfo:autoSetDeviceDomain:] */
