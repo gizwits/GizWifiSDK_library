@@ -193,6 +193,10 @@ extern NSString * _Null_unspecified XPGWifiDeviceHardwareProductKey DEPRECATED_M
 @property (strong, nonatomic, readonly) NSString * _Nullable deviceMcuFirmwareVer;
 @property (strong, nonatomic, readonly) NSString * _Nullable productUI;
 @property (weak, nonatomic, readonly) GizWifiDevice * _Nullable rootDevice;
+/**
+ GizWifiDeviceNetType类型。设备网络类型
+ */
+@property (assign, nonatomic, readonly) GizWifiDeviceNetType netType;
 
 /**
  设备订阅或解除订阅。订阅了设备，表示使用者关心这个设备的消息推送。解除订阅，表示使用者不关心这个设备的消息推送。订阅设备后，SDK将自动登录和自动绑定设备。解除订阅后，设备连接将自动断开，但不会自动解绑。一般来说，设备订阅都会成功的，SDK会记住设备是否被订阅了

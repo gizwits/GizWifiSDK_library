@@ -181,6 +181,18 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_SDK_MEMORY_MALLOC_FAILED = 8101,
     /** Daemon内部线程创建失败 */
     GIZ_SDK_THREAD_CREATE_FAILED = 8102,
+    /** 数据AES加密失败 */
+    GIZ_SDK_AES_ENCRYPT_FAILED = 8103,
+    /** 数据AES解密失败 */
+    GIZ_SDK_AES_DECRYPT_FAILED = 8104,
+    /** Json对象创建失败 */
+    GIZ_SDK_JSON_OBJECT_CREATE_FAILED = 8105,
+    /** Json解析失败 */
+    GIZ_SDK_JSON_PARSE_FAILED = 8106,
+    /** Json去格式化失败 */
+    GIZ_SDK_JSON_UNFORMAT_FAILED = 8107,
+    /** Json拷贝失败 */
+    GIZ_SDK_JSON_DUPLICATE_FAILED = 8108,
     
     /** 定时任务创建失败 */
     GIZ_SDK_SCHEDULER_CREATE_FAILED = 8120,
@@ -265,6 +277,12 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_SDK_DATAPOINT_SERVICE_UNAVAILABLE = 8202,
     /** 配置文件解析失败 */
     GIZ_SDK_DATAPOINT_PARSE_FAILED = 8203,
+    /** 无法识别设备的组网网关 */
+    GIZ_SDK_DEVICE_GATWEWAY_UNKNOWN = 8250,
+    /** 设备的组网mesh id无效 */
+    GIZ_SDK_DEVICE_MESHID_INVALID = 8251,
+    /** 设备产品类型不同，无法同时安全解绑 */ 
+    GIZ_SDK_DEVICE_PRODUCTKEY_DIFFERENT = 8252,
     
     /** SDK 未初始化 */
     GIZ_SDK_NOT_INITIALIZED = 8300,
@@ -319,6 +337,14 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_SDK_OTA_FIRMWARE_VERIFY_SUCCESS = 8359,
     /** 设备不支持手机OTA升级 */
     GIZ_SDK_OTA_DEVICE_NOT_SUPPORT = 8360,
+    /** websocket握手失败 */
+    GIZ_SDK_WS_HANDSHAKE_FAILED = 8400,
+    /** websocket登录失败 */
+    GIZ_SDK_WS_LOGIN_FAILED = 8401,
+    /** websocket设备订阅失败 */
+    GIZ_SDK_WS_DEVICE_SUBSCRIBE_FAILED = 8402,
+    /** websocket设备解除订阅失败 */
+    GIZ_SDK_WS_DEVICE_UNSUBSCRIBE_FAILED = 8403,
     
     /** mac already registered! */
     GIZ_OPENAPI_MAC_ALREADY_REGISTERED = 9001,
@@ -603,6 +629,20 @@ typedef NS_ENUM(NSInteger, GizWifiDeviceType) {
     GizDeviceCenterControl = 1,
     /** 子设备 */
     GizDeviceSub = 2,
+};
+
+/**
+ @brief GizWifiDeviceNetType枚举，描述SDK支持的设备网络类型
+ */
+typedef NS_ENUM(NSInteger, GizWifiDeviceNetType) {
+    /** wifi设备 */
+    GizDeviceNetWifi = 0,
+    /** NB设备 */
+    GizDeviceNetNB = 1,
+    /** BT设备 */
+    GizDeviceNetBT = 2,
+    /** BLE设备 */
+    GizDeviceNetBLE = 3,
 };
 
 /**
