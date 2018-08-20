@@ -17,8 +17,6 @@
 @property (assign, nonatomic, readonly) GizLogicalOperator conditionCombType;
 /** 设备联动规则的结果事件，GizDeviceJointActionRuleResultEvent对象数组 */
 @property (strong, nonatomic, readonly) NSArray <GizDeviceJointActionRuleResultEvent *>* _Nullable resultEventList;
- /** 是否开启联动。YES为开启，NO为关闭 */
-@property (assign, nonatomic, readonly) BOOL enabled;
 
 /**
  构造函数，用于创建联动规则对象，目前只支持中控

@@ -61,15 +61,17 @@
 - (void)addSubDevice:(NSArray <NSString *>* _Nullable)deviceMacs; //deviceMacs可不填
 
 /**
- 删除子设备，只有中控设备可控后才能执行删除操作。该接口会向中控设备发送删除子设备请求，中控设备将删除后的子设备列表通过回调返回
- @param device 待删除子设备，必须是这台中控网关对应的子设备
- @see 对应的回调接口：[GizWifiCentralControlDeviceDelegate GizWifiCentralControlDevice:didDiscovered:subDeviceList:]
+ 删除子设备。子设备被删除后就不会出现在中控的组网设备中了。只有中控设备可控后才能执行此操作。该接口会向中控设备发送删除子设备请求，中控设备将删除后的子设备列表通过回调返回
+ @param deviceList 待删除的子设备对象数组。此参数不能为nil或空数组
+ @see 回调 [GizWifiCentralControlDeviceDelegate didUpdateSubDevices:result:subDeviceList:]
  */
-- (void)deleteSubDevice:(GizWifiDevice * _Nonnull)device;
+- (void)deleteSubDevices:(NSArray * _Nonnull)deviceList;
 
 /** @deprecated 此接口已废弃，不再提供支持。 */
 - (void)getSubDevices DEPRECATED_MSG_ATTRIBUTE("No longer supported.") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
 /** @deprecated 此接口已废弃，不再提供支持。替代接口：[GizWifiCentralControlDevice addSubDevice:] */
 - (void)addSubDevice DEPRECATED_MSG_ATTRIBUTE("Please use addSubDevice: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
+
+- (void)deleteSubDevice:(GizWifiDevice * _Nonnull)device DEPRECATED_MSG_ATTRIBUTE("Please use deleteSubDevices: instead") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
 
 @end

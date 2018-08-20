@@ -91,7 +91,7 @@ GizDeviceScheduler构造函数，用于在云端创建一次性定时任务
  修改定时任务信息，此接口可用于修改云端或中控的定时任务信息。请注意，必须要先修改对应的变量值，然后再调用此接口完成修改。修改成功时返回最新的定时任务信息，修改失败时返回错误信息
  @param uid 用户uid。此参数必填，不能填空串或无效值
  @param token 用户token。此参数必填，不能填空串或无效值
- @param schedulerType 定时任务类型，GizSchedulerType枚举，详细见变量schedulerType说明。此参数不能填无效值
+ @param type 定时任务类型，GizSchedulerType枚举，详细见变量schedulerType说明。此参数不能填无效值
  @see 回调 [GizDeviceSchedulerDelegate scheduler:didUpdateSchedulerInfo:]
  */
 - (void)editSchedulerInfo:(NSString * _Nonnull)uid token:(NSString * _Nonnull)token type:(GizSchedulerType)type;

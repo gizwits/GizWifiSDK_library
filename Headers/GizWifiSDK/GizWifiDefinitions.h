@@ -259,17 +259,6 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_SDK_SCENE_RUN_FAILED = 8177,
     /** 场景状态更新失败 */
     GIZ_SDK_SCENE_STATUS_UPDATE_FAILED = 8178,
-    
-    /** 创建联动失败 */
-    GIZ_SDK_JOINT_ACTION_CREATE_FAILED = 8190,
-    /** 删除联动失败 */
-    GIZ_SDK_JOINT_ACTION_DELETE_FAILED = 8191,
-    /** 不支持的联动版本 */
-    GIZ_SDK_JOINT_ACTION_VER_UNSUPPORTED = 8193,
-    /** 无效的联动条件类型 */
-    GIZ_SDK_JOINT_ACTION_INVALID_CONDITION_TYPE = 8194,
-    /** 无效的联动结果事件类型 */
-    GIZ_SDK_JOINT_ACTION_INVALID_RESULT_EVENT_TYPE = 8195,
 
     /** 配置文件还未下载 */
     GIZ_SDK_DATAPOINT_NOT_DOWNLOAD = 8201,
@@ -277,12 +266,69 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_SDK_DATAPOINT_SERVICE_UNAVAILABLE = 8202,
     /** 配置文件解析失败 */
     GIZ_SDK_DATAPOINT_PARSE_FAILED = 8203,
-    /** 无法识别设备的组网网关 */
-    GIZ_SDK_DEVICE_GATWEWAY_UNKNOWN = 8250,
-    /** 设备的组网mesh id无效 */
-    GIZ_SDK_DEVICE_MESHID_INVALID = 8251,
-    /** 设备产品类型不同，无法同时安全解绑 */ 
-    GIZ_SDK_DEVICE_PRODUCTKEY_DIFFERENT = 8252,
+    
+    /** 创建联动失败 */
+    GIZ_SDK_JOINT_ACTION_CREATE_FAILED = 8221,
+    /** 删除联动失败 */
+    GIZ_SDK_JOINT_ACTION_DELETE_FAILED = 8222,
+    /** 不支持的联动版本 */
+    GIZ_SDK_JOINT_ACTION_VER_UNSUPPORTED = 8223,
+    /** 联动条件组合无效 */
+    GIZ_SDK_JOINT_ACTION_CONDITION_COMBI_INVALID = 8224,
+    /** 联动条件运算符无效 */
+    GIZ_SDK_JOINT_ACTION_CONDITION_OPERATOR_INVALID = 8225,
+    /** 联动结果类型无效 */
+    GIZ_SDK_JOINT_ACTION_RESULT_TYPE_INVALID = 8226,
+    /** 必须设置联动规则 */
+    GIZ_SDK_PARAM_JOINT_ACTION_REQUIRE_RULE = 8227,
+    /** 必须设置联动条件 */
+    GIZ_SDK_PARAM_JOINT_ACTION_REQUIRE_CONDITION = 8228,
+    /** 必须设置联动条件中的设备 */
+    GIZ_SDK_PARAM_JOINT_ACTION_CONDITION_REQUIRE_DEVICE = 8229,
+    /** 必须设置联动条件中的动作 */
+    GIZ_SDK_PARAM_JOINT_ACTION_CONDITION_REQUIRE_DATA = 8230,
+    /** 联动条件中的设备只能设置一个 */
+    GIZ_SDK_PARAM_JOINT_ACTION_CONDITION_DATA_ONLY_SUPPORT_ONE = 8231,
+    /** 联动条件中的设备动作无效 */
+    GIZ_SDK_PARAM_JOINT_ACTION_CONDITION_DATA_INVALID = 8232,
+    /** 必须设置联动的期望结果 */
+    GIZ_SDK_PARAM_JOINT_ACTION_REQUIRE_RESULT = 8233,
+    /** 必须设置联动要触发的动作 */
+    GIZ_SDK_PARAM_JOINT_ACTION_RESULT_REQUIRE_DATA = 8234,
+    /** 必须设置触发联动动作的设备 */
+    GIZ_SDK_PARAM_JOINT_ACTION_RESULT_REQUIRE_DEVICE = 8235,
+    /** 必须设置触发联动动作的组 */
+    GIZ_SDK_PARAM_JOINT_ACTION_RESULT_REQUIRE_GROUP = 8236,
+    /** 必须设置触发联动的场景 */
+    GIZ_SDK_PARAM_JOINT_ACTION_RESULT_REQUIRE_SCENE = 8237,
+    /** 必须设置触发联动的定时任务 */
+    GIZ_SDK_PARAM_JOINT_ACTION_RESULT_REQUIRE_SCHEDULER = 8238,
+    
+    
+    
+    /** 管理者设备必须是一个网关 */
+    GIZ_SDK_PARAM_GATEWAY_OWNER_REQUIRED = 8248,
+    /** 没有指定管理者设备 */
+    GIZ_SDK_PARAM_NO_DEVICE_OWNER = 8249,
+    
+    /** 产品类型不在指定范围内 */
+    GIZ_SDK_PRODUCTKEY_NOT_IN_SPECIFY = 8250,
+    /** 设备产品类型不同，无法同时安全解绑 */
+    GIZ_SDK_DEVICE_PRODUCTKEY_DIFFERENT = 8251,
+    /** 设备meshId不能为空 */
+    GIZ_SDK_DEVICE_MESHID_EMPTY = 8252,
+    /** 设备meshId无效 */
+    GIZ_SDK_DEVICE_MESHID_INVALID = 8253,
+    /** 设备meshId应为数字 */
+    GIZ_SDK_DEVICE_MESHID_IS_NOT_NUMBER = 8254,
+    /** 无法识别mesh网关 */
+    GIZ_SDK_DEVICE_MESH_GATEWAY_UNKNOWN = 8255,
+    /** mesh网关未就绪 */
+    GIZ_SDK_DEVICE_MESH_GATEWAY_NOT_READY = 8256,
+    /** 需要有mesh网关才能执行控制指令 */
+    GIZ_SDK_DEVICE_CONTROL_NEED_MESH_GATEWAY = 8257,
+    /** 设备mac长度无效 */
+    GIZ_SDK_DEVICE_MAC_LENGTH_INVALID = 8258,
     
     /** SDK 未初始化 */
     GIZ_SDK_NOT_INITIALIZED = 8300,
@@ -569,6 +615,7 @@ typedef NS_ENUM(NSInteger, GizWifiGAgentType) {
     GizGAgentOther = 11,
     /** 芯海模组 */
     GizGAgentFlyLink = 12,
+    GizGAgentMxchipAWS = 13,
 };
 
 /**

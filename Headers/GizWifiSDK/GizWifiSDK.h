@@ -18,6 +18,7 @@
 #import <GizWifiSDK/GizDeviceSceneCenter.h>
 #import <GizWifiSDK/GizDeviceJointActionCenter.h>
 #import <GizWifiSDK/GizUserInfo.h>
+#import <GizWifiSDK/GizLiteGWSubDevice.h>
 
 @class GizWifiSDK;
 
@@ -129,7 +130,7 @@
 /**
  用户登录结果的回调接口
  @param wifiSDK 回调的 GizWifiSDK 单例
- @param 详细见 GizWifiErrorCode 枚举定义。result.code 为 GIZ_SDK_SUCCESS 表示成功，其他为失败。失败时，其他回调参数为 nil
+ @param result 详细见 GizWifiErrorCode 枚举定义。result.code 为 GIZ_SDK_SUCCESS 表示成功，其他为失败。失败时，其他回调参数为 nil
  @param uid 注册成功后得到的 uid
  @param token 注册成功后得到的 token
  @see 触发函数：[GizWifiSDK userLoginAnonymous], [GizWifiSDK userLogin:password:], [GizWifiSDK userLoginWithThirdAccount:uid:token:]
@@ -258,6 +259,35 @@
  @see 触发函数：[GizWifiSDK setDeviceServerInfo:mac:]
  */
 - (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didSetDeviceServerInfo:(NSError * _Nonnull)result mac:(NSString * _Nullable)mac;
+    
+/**
+ 设备安全注册回调接口。注册多个设备时，注册成功和注册失败的设备会分别在回调的两个参数中返回
+ @param result 注册成功或失败，详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示全部注册成功，其他为失败
+ @param successDevices 注册成功的设备信息，NSDictionary数组，nil表示无注册成功的设备。格式如下：
+ [{mac:"xxx", productKey:"xxx", did:"xxx"},  ...]
+ mac 注册成功的设备mac，NSString类型
+ productKey 注册成功的设备产品类型标识，NSString类型
+ did 注册成功的设备唯一标识，NSString类型
+ @param failedDevices 注册失败的设备信息，NSDictionary数组，nil表示无注册失败的设备。格式如下：
+ [{mac:"xxx", productKey:"xxx", errorCode:"xxx"},  ...]
+ mac 注册失败的设备mac，NSString类型
+ productKey 注册失败的设备产品类型标识，NSString类型
+ errorCode 失败的错误码，NSNumber类型
+ @see 触发函数 [GizWifiSDK deviceSafetyRegister:productKey:devicesInfo:]
+ @see 枚举 GizWifiErrorCode
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didDeviceSafetyRegister:(NSArray * _Nullable)successDevices failedDevices:(NSArray * _Nullable)failedDevices;
+
+/**
+ 设备安全解绑回调接口。同时解绑多个设备时，若全部解绑成功则回调参数为nil
+ @param failedDevices 解绑失败的设备，NSDictionary数组，nil表示全部解绑成功。字典格式如下：
+ [{device:xxx, errorCode:xxx},  ...]
+ device 解绑失败的设备对象，GizWifiDevice类型
+ errorCode 失败的错误码，NSNumber类型，见GizWifiErrorCode枚举定义
+ @see 触发函数 [GizWifiSDK deviceSafetyUnbind:]
+ @see GizWifiErrorCode
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didDeviceSafetyUnbind:(NSArray * _Nullable)failedDevices;
 
 /** @deprecated 此接口已废弃，不再提供支持。 */
 - (void)wifiSDK:(GizWifiSDK * _Null_unspecified)wifiSDK didGetGroups:(NSError * _Null_unspecified)result groupList:(NSArray * _Null_unspecified)groupList DEPRECATED_MSG_ATTRIBUTE("No longer supported.") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
@@ -374,7 +404,7 @@
  @param mode 配置模式，详细见GizWifiConfigureMode枚举定义。此参数必须填有效范围内的值
  @param softAPSSIDPrefix 热点模式下设备热点前缀或全名。默认前缀为:XPG-GAgent-，SDK以此判断手机当前是否连上了设备的热点。AirLink模式下可传nil
  @param timeout 配网绑定的超时时间，默认超时时间为30秒。在超时时间内如果无法配置和绑定会回调配网失败
- @param wifiGAgentType 待配置的模组类型数组，详细见GizWifiGAgentType枚举。默认类型为GizGAgentESP。如果在模组类型中找不到自己使用的模组，可传GizGAgentOther
+ @param types 待配置的模组类型数组，详细见GizWifiGAgentType枚举。默认类型为GizGAgentESP。如果在模组类型中找不到自己使用的模组，可传GizGAgentOther
  @see 回调函数 [GizWifiSDKDelegate wifiSDK:didSetDeviceOnboarding:mac:did:productKey:]
  */
 - (void)setDeviceOnboardingByBind:(NSString * _Nonnull)ssid key:(NSString * _Nullable)key configMode:(GizWifiConfigureMode)mode softAPSSIDPrefix:(NSString * _Nullable)softAPSSIDPrefix timeout:(int)timeout wifiGAgentType:(NSArray * _Nullable)types;
@@ -388,7 +418,7 @@
  @param mode 配置模式，详细见GizWifiConfigureMode枚举定义。此参数必须填有效范围内的值
  @param softAPSSIDPrefix 热点模式下设备热点前缀或全名。默认前缀为:XPG-GAgent-，SDK以此判断手机当前是否连上了设备的热点。AirLink模式下可传nil
  @param timeout 配网绑定的超时时间，默认超时时间为30秒。在超时时间内如果无法配置和绑定会回调配网失败
- @param wifiGAgentType 待配置的模组类型数组，详细见GizWifiGAgentType枚举。默认类型为GizGAgentESP。如果在模组类型中找不到自己使用的模组，可传GizGAgentOther
+ @param types 待配置的模组类型数组，详细见GizWifiGAgentType枚举。默认类型为GizGAgentESP。如果在模组类型中找不到自己使用的模组，可传GizGAgentOther
  @param bind 配网时是否自动绑定，自动绑定要求先用户登录。YES为自动绑定，NO为不绑定
  @see 回调函数 [GizWifiSDKDelegate wifiSDK:didSetDeviceOnboarding:mac:did:productKey:]
  */
@@ -473,7 +503,7 @@
 
 /**
  通过手机号请求短信验证码
- @param 应用的 secret 信息，从 site.gizwits.com 中可以看到
+ @param appSecret 信息，从 site.gizwits.com 中可以看到
  @param phone 手机号
  @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didRequestSendPhoneSMSCode:token:]
  */
@@ -482,7 +512,7 @@
 /**
  验证手机短信验证码。注意，验证短信验证码后，验证码就失效了，无法再用于手机号注册
  @param token 验证码的 token，通过 getCaptchaCode 获取
- @param phoneCode 手机短信验证码
+ @param code 手机短信验证码
  @param phone 手机号
  @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didVerifyPhoneSMSCode:]
  */
@@ -657,6 +687,28 @@
  @param sendLog 是否发送问题日志。如果前面两个参数都没填，则默认发送问题日志
  */
 + (void)userFeedback:(NSString * _Nullable)contactInfo feedbackInfo:(NSString * _Nullable)feedbackInfo sendLog:(BOOL)sendLog;
+    
+/**
+ 设备安全注册接口。向云端加密注册设备，注册成功时返回设备did，同时如果用户已登录则会自动绑定已注册成功的设备，绑定成功的设备会主动触发设备列表更新。需注意，安全注册需要productKey和productSecret，这两个信息应在startWithAppInfo接口参数productInfo的指定范围内
+ @param gateway 设备的代理网关，此参数选填。若要注册的设备不需要代理网关，此参数可传null
+ @param productKey 设备的产品类型识别码，此参数必填。若填入的productKey不在启动接口参数productInfo的指定范围将不会向云端注册
+ @param devicesInfo 要注册的设备信息，可同时传多组设备信息，格式如下：
+ [{mac:"xxx", meshID:"xxx", alias:"xxx", authCode:"xxx"},  ...]
+ mac 设备物理唯一标识，最大32字符长度，字符串类型。必填
+ meshID 设备组网ID，最大256字符长度。必填
+ alias 设备别名，最大128字符长度，String类型。选填
+ authCode 设备注册的授权码，32字符长度，由开发者自定义生成，字符串类型。选填
+ @see 回调 {@link GizWifiSDKListener#didDeviceSafetyRegister(List<ConcurrentHashMap<String, String>>, List<ConcurrentHashMap<String, String>>)}
+ @see 枚举 GizDeviceNetType
+ */
++ (void)deviceSafetyRegister:(GizWifiDevice * _Nullable)gateway productKey:(NSString * _Nonnull)productKey devicesInfo:(NSArray * _Nonnull)devicesInfo;
+
+/**
+ 设备安全解绑接口。此接口会在云端把设备的所有关联用户都解绑，可同时解绑多个相同产品类型的设备。但如果设备的产品类型（productKey）不一致将不会解绑任何设备
+ @param devicesInfo 要解绑的设备信息，格式：[{"device": device, "authCode": "xxx"}]，device为GizWifiDevice对象，authCode为授权码。authCode不是必填参数，若没有授权码则不需要填写此字段
+ @see 回调 [GizWifiSDKDelegate didDeviceSafetyUnbind:]
+ */
++ (void)deviceSafetyUnbind:(NSArray* _Nonnull)devicesInfo;
 
 /**
  设置日志加密。此接口无回调。App若要设置日志加密，需要在调用sdk启动接口之前调用此接口。加密后，日志将不再输出到调试终端上
