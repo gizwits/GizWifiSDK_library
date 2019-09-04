@@ -164,6 +164,13 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     /** M2M服务器连接失败 */
     GIZ_SDK_M2M_CONNECTION_INVALID = 8051,
     
+    /** 停止接收设备日志 */
+    GIZ_SDK_GET_DEVICE_LOG_STOPPED = 8061,
+    /** 没有可以获取设备日志的设备 */
+    GIZ_SDK_NO_AVAILABLE_DEVICE_TO_GET_DEVICE_LOG = 8062,
+    /** 正在获取设备日志 */
+    GIZ_SDK_IS_GETTING_DEVICE_LOG = 8063,
+    
     /** HTTP服务不支持此API */
     GIZ_SDK_HTTP_SERVER_NOT_SUPPORT_API = 8095,
     /** http应答格式错误 */
@@ -343,7 +350,7 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     /** 登录蓝牙设备失败 */
     GIZ_SDK_BLE_LOGIN_FAILED = 8285,
     /** 搜索蓝牙设备操作已经停止 */
-    GIZ_SDK_BLE_SEARCH_DEVICE_STOPED = 8286,
+    GIZ_SDK_BLE_SEARCH_DEVICE_STOPPED = 8286,
     /** 查找不到设备的服务和角色特征值 */
     GIZ_SDK_BLE_CANNOT_FIND_DEVICE_SERVER_OR_CHARACTERISTICS = 8287,
     /** 当前用户的组网名称或密码不能为空 */
@@ -418,6 +425,10 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_SDK_WS_DEVICE_SUBSCRIBE_FAILED = 8402,
     /** websocket设备解除订阅失败 */
     GIZ_SDK_WS_DEVICE_UNSUBSCRIBE_FAILED = 8403,
+    /** 查找不到产品的配置文件 */
+    GIZ_SDK_UNFIND_PRODUCT_CONFIG_FILE = 8460,
+    /** 查找不到对应产品的脚本文件 */
+    GIZ_SDK_UNFIND_PRODUCT_SCRIPT_FILE = 8461,
     
     /** mac already registered! */
     GIZ_OPENAPI_MAC_ALREADY_REGISTERED = 9001,
@@ -573,6 +584,8 @@ typedef NS_ENUM(NSInteger, GizWifiErrorCode) {
     GIZ_OPENAPI_CANNOT_TRANSFER_OWNER_TO_SELF = 9103,
     /** can not transfer owner privilege to a time limited guest! */
     GIZ_OPENAPI_TRANSFER_OWNER_TO_LIMIT_GUEST = 9104,
+    /** device binding time closed */
+    GIZ_OPENAPI_DEVICE_BINDING_TIME_CLOSE = 9105,
     /** reserved */
     GIZ_OPENAPI_RESERVED = 9999,
     
@@ -983,7 +996,18 @@ typedef NS_ENUM(NSInteger, GizOTAFirmwareType) {
 typedef NS_ENUM(NSInteger, GizAdapterType) {
     GizAdapterNon = 0,
     GizAdapterDataPointMap = 1,
-    GizAdapterDataPointFunc = 2
+    GizAdapterDataPointFunc = 2,
+    /** 支持通过脚本进行协议转换 */
+    GizAdapterDataPointScript = 3
+};
+
+typedef NS_ENUM(NSInteger, GizLocalMeshType) {
+    /** 不支持蓝牙本地控制 */
+    GizLocalMeshUnSupport = 0,
+    /** 支持蓝牙本地控制的子设备productKey */
+    GizLocalMeshSub = 1,
+    /** 子设备支持蓝牙本地控制的网关productKey */
+    GizLocalMeshGateway = 2 
 };
 
 /**
@@ -991,7 +1015,7 @@ typedef NS_ENUM(NSInteger, GizAdapterType) {
  */
 typedef NS_ENUM(NSInteger, GizMeshVerdor) {
     GizMeshTelink = 0, //泰凌微
-    GizMeshMayi = 1   //蚂蚁
+    GizMeshJingXun = 1 // 晶讯
 };
 
 /** @deprecated 此枚举定义已废弃，不再提供支持。请使用替代定义：GizWifiErrorCode */

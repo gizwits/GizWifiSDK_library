@@ -30,6 +30,29 @@
 @optional
 
 /**
+ 获取设备日志的回调接口
+
+ @param wifiSDK 为回调的 GizWifiSDK 单例
+ @param result 获取设备日志结果，若返回GIZ_SDK_GET_DEVICE_LOG_STOPPED，说明获取设备日志结束；
+ @param mac 日志对应的设备mac地址
+ @param timestamp 日志产生的时间，可能为0
+ @param logSN 日志序号，便于结合时间戳查看日志产生顺序
+ @param log 日志内容
+ @see 触发函数：[GizWifiSDK getDeviceLog:]
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didReceiveDeviceLog:(NSError * _Nonnull)result  mac:(NSString * _Nullable)mac timestamp:(NSInteger)timestamp logSN:(NSInteger)logSN log:(NSString * _Nullable)log;
+
+
+/**
+ 获取日志映射文件的回调接口
+
+ @param wifiSDK 为回调的 GizWifiSDK 单例
+ @param result 详细见 GizWifiErrorCode 枚举定义。result.code 为 GIZ_SDK_SUCCESS 表示成功，其他为失败。
+ @see 触发函数：[GizWifiSDK getMapTab]
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didGetMapTab:(NSError * _Nonnull)result;
+
+/**
  设备配置结果的回调接口
  @param wifiSDK 为回调的 GizWifiSDK 单例
  @param result 配置成功或失败。如果配置失败，其他参数为nil
@@ -290,6 +313,49 @@
  */
 - (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didDeviceSafetyUnbind:(NSArray * _Nullable)failedDevices;
 
+/**
+ @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败。失败时，deviceList 大小为 0
+ @param meshDeviceList mesh设备列表，NSDictionary数组。格式：[{"mac":"xxx", "meshID": "xxx", "advData":"xxx"}]
+ @see 触发函数 [GizWifiSDK searchMeshDevice:]
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didDiscoveredMeshDevices:(NSError * _Nullable)result meshDeviceList:(NSArray * _Nonnull)meshDeviceList;
+
+/**
+ @param meshDeviceInfo 切网成功，返回新的设备信息,切网失败，返回原来的设备信息, NSDictionary类型 {"mac":"xxx", "meshID": "xxx"}
+ @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败
+ @see 触发函数 [GizWifiSDK changeDeviceMesh:newMeshID:]
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didChangeDeviceMesh:(NSDictionary * _Nonnull)meshDeviceInfo result:(NSError * _Nullable)result;
+
+/**
+ @param  mac  返回恢复出厂设置成功的设备mac地址
+ @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败
+ @see 触发函数 [GizWifiSDK restoreDeviceFactorySetting:]
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didRestoreDeviceFactorySetting:(NSString * _Nullable)mac result:(NSError * _Nullable)result;
+
+/**
+ @param successMeshDevice  添加到分组成功的设备列表。格式：[{"mac":"xxx", "meshID": "xxx"}]
+ @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败
+ @see 触发函数 [GizWifiSDK addDevices:toGroup:]
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didAddDevicesToGroup:(NSArray<GizLiteGWSubDevice *> * _Nullable)successMeshDevice result:(NSError * _Nullable)result;
+
+/**
+ @param successMeshDevice  删除分组成功的设备列表。格式：[{"mac":"xxx", "meshID": "xxx"}]
+ @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败
+ @see 触发函数 [GizWifiSDK deleteDevices:fromGroup:]
+ */
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didDeleteDevicesFromGroup:(NSArray<GizLiteGWSubDevice *> * _Nullable)successMeshDevice result:(NSError * _Nullable)result;
+
+/**
+ 获取设备所在分组集合的回调
+ @param groupIDList 设备所在分组的ID列表
+ @param meshDevice 设备对象
+ @see 回调 [GizWifiSDK getDeviceGroups:]
+ **/
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didGetDeviceGroups:  (NSArray<NSNumber *> * _Nonnull)groupIDList device:(GizLiteGWSubDevice * _Nonnull)meshDevice result:(NSError * _Nullable)result;
+
 /** @deprecated 此接口已废弃，不再提供支持。 */
 - (void)wifiSDK:(GizWifiSDK * _Null_unspecified)wifiSDK didGetGroups:(NSError * _Null_unspecified)result groupList:(NSArray * _Null_unspecified)groupList DEPRECATED_MSG_ATTRIBUTE("No longer supported.") NS_EXTENSION_UNAVAILABLE_IOS("") NS_SWIFT_UNAVAILABLE("");
 /** @deprecated 此接口已废弃，不再提供支持。 */
@@ -351,7 +417,7 @@
  注意：设备域名自动设置开启后会一直生效，但调用setDeviceServerInfo接口时将会终止自动设置
  
  @param appInfo 应用信息，格式：{"appId": "xxx", "appSecret": "xxx"}。此参数不能填nil，appId和appSecret必须为有效值。在机智云开发者中心 dev.gizwits.com 中，每个注册的设备在对应的“应用配置”中，都能够查到对应的 appID和appSecret
- @param productInfo 产品信息数组，格式：[{"productKey": "xxx", "productSecret": "xxx", "usingAdapter":"xxx"}]，usingAdapter见GizAdapterType枚举定义。此参数为选填，如果填写了此参数，需保证productKey和productSecret为有效值，无效值会被忽略。SDK会根据此参数过滤设备列表
+ @param productInfo 产品信息数组，格式：[{"productKey": "xxx", "productSecret": "xxx", "usingAdapter":"xxx", "localMeshType":"xxx"}]，usingAdapter见GizAdapterType枚举定义， localMeshType见GizLocalMeshType枚举定义。此参数为选填，如果填写了此参数，需保证productKey和productSecret为有效值，无效值会被忽略。SDK会根据此参数过滤设备列表
  @param cloudSeviceInfo 服务器域名信息，格式：{"openAPIInfo": "xxx", "siteInfo": "xxx", "pushInfo": ""}。如果使用机智云统一部署的云服务域名，此参数填nil，此时将根据用户手机的地理位置信息使用匹配的域名。如果需要独立部署，此参数必须指定域名信息。如果需要指定端口号，可指定Http端口如：xxx.gizwits.com:81，或同时指定Http和Https端口如：xxx.gizwits.com:81&8443。不指定端口号时，形如：xxx.gizwits.com
  @param autoSetDeviceDomain 是否要开启设备域名的自动设置功能。此参数默认值为NO，即不开启自动设置。参数值传YES则开启设备域名的自动设置功能，如果开启了设备域名的自动设置，小循环设备将被连接到App当前使用的云服务域名上
  @see 回调 [wifiSDK didNotifyEvent:eventSource:eventID:eventMessage:]
@@ -376,6 +442,64 @@
  */
 + (void)setLogLevel:(GizLogPrintLevel)logPrintLevel;
 
+/**
+ 搜索mesh网络设备。每次搜索指定超时时间，时间到则停止搜索。App可重复调用此接口
+
+ @param meshName 指定mesh网络名称。如果为nil，则搜索所有mesh网络设备；不为nil，则只搜索该mesh网络设备
+ @param timeout 搜索的超时时间（以秒为单位）
+ @see 回调 [wifiSDK didDiscoveredMeshDevices:meshDeviceList:]
+ */
++(void)searchMeshDevice:(NSString * _Nullable)meshName timeout:(int)timeout;
+
+/**
+ 设置Mesh组网信息， 用户登录成功后调用
+ 
+ @param meshName 用户组网。此参数不能为nil
+ @param password 组网密码。此参数不能为nil
+ @param uuidInfo 服务和角色特征值，格式：{"serviceUUID": "xxx",  "pairUUID": "xxx", "commandUUID": "xxx", "notifyUUID": "xxx"}，这几个key分别对应为：服务特征值、登录配对特征值、控制特征值、通知特征值。此参数不能为nil
+ @param meshLTK mesh设备通信密钥。此参数不能为nil
+ @param meshVendor mesh设备厂商
+ */
++ (void)setUserMeshName:(NSString * _Nonnull)meshName password:(NSString * _Nonnull)password uuidInfo:(NSDictionary * _Nonnull)uuidInfo meshLTK:(NSData * _Nonnull)meshLTK meshVendor:(GizMeshVerdor)meshVendor;
+
+/**
+ 修改Mesh设备组网，搜索到新的mesh设备后，需要先调用这个接口切网，再去做安全注册
+ @param meshDeviceInfo mesh设备信息 NSDictionary类型 {"mac":"xxx", "meshID": "xxx"}。此参数不能为nil
+ @param currentMeshInfo  设备当前所在组网信息，格式：{"meshName": "xxx", "password": "xxx"}，不能为空
+ @param newMeshID 即将为该设备分配的新MeshID, 取值范围1~255,需要传一个在当前组网未被使用过的meshID
+ @see 回调 [GizWifiSDKDelegate didChangeDeviceMesh:result:]
+ **/
++ (void)changeDeviceMesh:(NSDictionary * _Nonnull)meshDeviceInfo currentMesh:(NSDictionary * _Nonnull)currentMeshInfo newMeshID:(NSUInteger)newMeshID;
+
+/**
+ 恢复设备出厂设置，只支持Mesh设备
+ @param meshDevice 要恢复出厂设置的设备对象。此参数不能为nil
+ @see 回调 [GizWifiSDKDelegate didRestoreDeviceFactorySetting:result:]
+ **/
++ (void)restoreDeviceFactorySetting:(GizLiteGWSubDevice * _Nonnull)meshDevice;
+
+/**
+ 将所给设备添加到分组中
+ @param meshDevices Mesh设备列表
+ @param groupID 分组ID范围 [1, 254]， 一台设备最多只能创建8个分组
+ @see 回调 [GizWifiSDKDelegate didAddDevicesToGroup:result:]
+ **/
++ (void)addDevices:(NSArray<GizLiteGWSubDevice *> * _Nonnull)meshDevices toGroup:(uint8_t)groupID;
+
+/**
+ 将设备集合从指定分组删除
+ @param meshDevices Mesh设备列表
+ @param groupID 分组ID 范围 [1, 254]
+ @see 回调 [GizWifiSDKDelegate didDeleteDevicesToGroup:result:]
+ **/
++ (void)deleteDevices:(NSArray<GizLiteGWSubDevice *> * _Nonnull)meshDevices fromGroup:(uint8_t)groupID;
+
+/**
+ 获取设备所在的分组集合
+ @param meshDevice Mesh设备列表
+ @see 回调 [GizWifiSDKDelegate didGetDeviceGroups:device:result:]
+ **/
++ (void)getDeviceGroups:(GizLiteGWSubDevice * _Nullable)meshDevice;
 
 /**
  把设备配置到局域网 wifi 上。设备处于 softap 模式时，模组会产生一个热点名称，手机 wifi 连接此热点后就可以配置了。如果是机智云提供的固件，模组热点名称前缀为"XPG-GAgent-"，密码为"123456789"。设备处于 airlink 模式时，手机随时都可以开始配置。但无论哪种配置方式，设备上线时，手机要连接到配置的局域网 wifi 上，才能够确认设备已配置成功。
@@ -441,7 +565,6 @@
  NSArray类型，为 GizWifiDevice 对象数组。设备列表缓存，APP 访问该变量即可得到当前 GizWifiSDK 发现的设备列表
  */
 @property (strong, nonatomic, readonly) NSArray <GizWifiDevice *>* _Nullable deviceList;
-
 
 /**
  获取绑定设备列表。在不同的网络环境下，有不同的处理：
@@ -641,7 +764,7 @@
 + (void)getCurrentCloudService;
 
 /**
- 绑定推送的id
+ 绑定推送的id（此接口待发布）
  @param token 用户登录或注册时得到的 token
  @param channelID 推送ID
  @param alias 别名
@@ -651,7 +774,7 @@
 - (void)channelIDBind:(NSString * _Nonnull)token channelID:(NSString * _Nonnull)channelID alias:(NSString * _Nullable)alias pushType:(GizPushType)pushType;
 
 /**
- 解绑推送的id
+ 解绑推送的id（此接口待发布）
  @param token 用户登录或注册时得到的 token
  @param channelID 推送ID
  @see 对应的回调接口：[GizWifiSDKDelegate wifiSDK:didChannelIDUnBind:]
@@ -717,6 +840,22 @@
  设置日志加密。此接口无回调。App若要设置日志加密，需要在调用sdk启动接口之前调用此接口。加密后，日志将不再输出到调试终端上
  */
 + (void)encryptLog;
+
+/**
+ 获取设备日志。 需要先连接上设备的热点才可以调用该接口
+ 
+ @param softAPSSIDPrefix 设备SoftAP模式下的SSID前缀或全名。当传空的情况，只要手机连接了WiFi，便默认为连接上了设备的热点；传非空的情况，将用来与当前连接的热点前缀匹配，匹配得上才认为连接上了设备热点
+ @see 回调 [GizWifiSDKDelegate wifiSDK:didReceiveDeviceLog: mac:timestamp:log:]
+ */
++ (void)getDeviceLog:(NSString * _Nullable)softAPSSIDPrefix;
+
+
+/**
+  获取日志映射文件
+ 
+  @see 回调 [GizWifiSDKDelegate wifiSDK:didGetMapTab:]
+ */
++ (void)getMapTab;
 
 /*不发布（仅智家），仅用于iOS的softap不切wifi配网（即client收到1012后不自动切网）。此接口默认自动绑定，绑定成功才会配置成功*/
 - (void)deviceOnboardingSoftap:(NSString * _Nonnull)ssid key:(NSString * _Nonnull)key softAPSSIDPrefix:(NSString * _Nullable)softAPSSIDPrefix timeout:(int)timeout wifiGAgentType:(NSArray * _Nullable)types;
