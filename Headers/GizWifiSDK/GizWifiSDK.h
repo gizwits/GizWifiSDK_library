@@ -314,6 +314,13 @@
 - (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didDeviceSafetyUnbind:(NSArray * _Nullable)failedDevices;
 
 /**
+ 注销用户回调
+ result 详细见 GizWifiErrorCode 枚举定义。result.code 为 GIZ_SDK_SUCCESS 表示成功，其他为失败。
+ @see  [GizWifiSDK userLogout]
+ **/
+- (void)wifiSDK:(GizWifiSDK * _Nonnull)wifiSDK didUserLogout: (NSError * _Nullable)result;
+
+/**
  @param result 详细见 GizWifiErrorCode 枚举定义。GIZ_SDK_SUCCESS 表示成功，其他为失败。失败时，deviceList 大小为 0
  @param meshDeviceList mesh设备列表，NSDictionary数组。格式：[{"mac":"xxx", "meshID": "xxx", "advData":"xxx"}]
  @see 触发函数 [GizWifiSDK searchMeshDevice:]
@@ -848,6 +855,12 @@
  @see 回调 [GizWifiSDKDelegate wifiSDK:didReceiveDeviceLog: mac:timestamp:log:]
  */
 + (void)getDeviceLog:(NSString * _Nullable)softAPSSIDPrefix;
+
+/**
+ 注销用户
+ @see 回调 [GizWifiSDKDelegate didUserLogout:]
+ **/
+- (void)userLogout;
 
 
 /**

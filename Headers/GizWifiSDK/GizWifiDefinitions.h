@@ -624,7 +624,11 @@ typedef NS_ENUM(NSInteger, GizWifiConfigureMode) {
     /** AirLink配置模式 */
     GizWifiAirLink = 1,
     /** 支持多设备进行AirLink配置 */
-    GizWifiAirLinkMulti = 2
+    GizWifiAirLinkMulti = 2,
+    /** 蓝牙配置模式 */
+    GizWifiBleLink = 3,
+    /** 支持多设备同时进行蓝牙配置 */
+    GizWifiBleLinkMulti = 4
 };
 
 /**
